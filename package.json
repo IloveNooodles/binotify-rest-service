@@ -1,0 +1,24 @@
+{
+  "name": "binotify-rest-service",
+  "version": "1.0.0",
+  "description": "REST Service for binotfy applications",
+  "main": "index.js",
+  "repository": "git@gitlab.informatika.org:if3110-2022-k02-02-04/binotify-rest-service.git",
+  "author": "IloveNooodles <mgarebaldhie80@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.11.9",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
+  },
+  "scripts": {
+    "build": "tsc --project ./",
+    "start:dev": "nodemon src/server.ts",
+    "start:prod": "node dist/server.js"
+  }
+}
