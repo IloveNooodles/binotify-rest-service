@@ -1,6 +1,6 @@
 import express from "express";
 
-import routes from "./routes";
+import routes from "./infrastructure/http/route";
 
 class App {
   public server;
