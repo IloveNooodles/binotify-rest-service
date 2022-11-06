@@ -3,10 +3,10 @@ export interface StandardError {
     message: string;
 }
 
-export enum errorCode {
+export enum ErrorCode {
     INVALID_API_KEY = 'INVALID_API_KEY',
 }
 
-export enum errorMessage {
+export enum ErrorMessage {
     INVALID_API_KEY = 'Your API key is invalid',
 }
