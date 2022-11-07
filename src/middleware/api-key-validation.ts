@@ -2,7 +2,7 @@ import * as HttpStatus from 'http-status-codes';
 import { Request, Response, NextFunction } from 'express';
 import { StandardError, ErrorCode, ErrorMessage } from '../common/error';
 
-export default function (apiKey: string) {
+const validateApiKey = (apiKey: string) => {
     return (req: Request, res: Response, next: NextFunction) => {
         const reqApiKey = req.get('x-api-key');
         if (reqApiKey !== apiKey) {
@@ -17,3 +17,5 @@ export default function (apiKey: string) {
         next();
     };
 }
+
+export default validateApiKey;
