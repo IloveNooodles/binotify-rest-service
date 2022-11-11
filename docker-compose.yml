@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+  web:
+    container_name: binotify-rest-services
+    hostname: web
+    env_file: .env
+    build: .
+    ports:
+      - "8000:3333"
+    networks:
+      - rest-service
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    container_name: postgres
+    image: postgres:13.9-alpine3.16
+    hostname: postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    env_file: .env
+    restart: always
+    ports:
+      - "8001:5432"
+    networks:
+      - rest-service
+
+volumes:
+  pgdata:
+    driver: local
+
+networks:
+  rest-service:
