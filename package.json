@@ -4,13 +4,15 @@
   "description": "REST Service for binotfy applications",
   "main": "index.js",
   "repository": "git@gitlab.informatika.org:if3110-2022-k02-02-04/binotify-rest-service.git",
-  "author": "IloveNooodles <mgarebaldhie80@gmail.com>",
+  "author": "gedearyarp <gdryrp@gmail.com>, IloveNooodles <mgarebaldhie80@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "@prisma/client": "^4.6.1",
+    "@types/bcrypt": "^5.0.0",
     "@types/joi": "^17.2.3",
     "@types/jsonwebtoken": "^8.5.9",
     "@types/node": "^18.11.9",
+    "@types/password-hash": "^1.2.21",
     "@types/pg": "^8.6.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
@@ -18,6 +20,7 @@
     "http-status-codes": "^2.2.0",
     "joi": "^17.7.0",
     "jsonwebtoken": "^8.5.1",
+    "password-hash": "^1.2.2",
     "pg": "^8.8.0",
     "prisma": "^4.6.1",
     "ts-node": "^10.9.1",
@@ -30,7 +33,7 @@
   },
   "scripts": {
     "build": "tsc --project ./",
-    "start:dev": "nodemon src/server.ts",
+    "start": "nodemon src/server.ts",
     "start:prod": "node dist/server.js",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
   }

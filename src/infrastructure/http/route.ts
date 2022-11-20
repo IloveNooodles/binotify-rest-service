@@ -29,7 +29,8 @@ router.post(
     '/register',
     validateRequest({
         body: JRegisterRequest
-    })
+    }),
+    register()
 );
 
 export default router;

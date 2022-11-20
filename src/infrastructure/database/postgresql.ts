@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export class Pg {
+export default class Pg {
     public static async connect(): Promise<void> {
         await prisma.$connect();
     }

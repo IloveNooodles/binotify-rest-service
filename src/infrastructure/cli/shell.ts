@@ -1,6 +1,6 @@
 import { exec } from 'child_process';
 
-export class Shell {
+export default class Shell {
     public static exec(command: string): Promise<string> {
         return new Promise((resolve, reject) => {
             exec(command, (error, stdout, stderr) => {
