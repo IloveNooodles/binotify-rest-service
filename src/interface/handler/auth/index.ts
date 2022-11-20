@@ -8,19 +8,18 @@ const login = () => {
     return (req: Request, res: Response, next: NextFunction) => {
         const jwtSecretKey: string = getJwtSecretKey();
 
-        /*
-            TODO: Implement your login logic here.
-        */
         let data = {
             time: Date(),
-            userId: 12,
-        }
+            userId: 12
+        };
 
         const token = jwt.sign(data, jwtSecretKey);
         res.status(HttpStatus.StatusCodes.OK).send({ token });
     };
-}
+};
 
-export {
-    login,
-}
+const register = () => {
+    return (req: Request, res: Response, next: NextFunction) => {};
+};
+
+export { login, register };

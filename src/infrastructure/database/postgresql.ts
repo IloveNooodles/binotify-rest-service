@@ -1,8 +1,8 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
-export class PG {
+export class Pg {
     public static async connect(): Promise<void> {
         await prisma.$connect();
     }

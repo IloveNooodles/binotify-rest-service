@@ -8,7 +8,7 @@ const validateApiKey = (apiKey: string) => {
         if (reqApiKey !== apiKey) {
             const error: StandardError = {
                 error_code: ErrorCode.INVALID_API_KEY,
-                message: ErrorMessage.INVALID_API_KEY,
+                message: ErrorMessage.INVALID_API_KEY
             };
 
             return res.status(HttpStatus.StatusCodes.UNAUTHORIZED).send(error);
@@ -16,6 +16,6 @@ const validateApiKey = (apiKey: string) => {
 
         next();
     };
-}
+};
 
 export default validateApiKey;
