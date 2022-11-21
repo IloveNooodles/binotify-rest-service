@@ -9,8 +9,7 @@ const JRegisterRequest = Joi.object({
     name: Joi.string().required(),
     username: Joi.string().required(),
     password: Joi.string().required(),
-    email: Joi.string().email().required(),
-    is_admin: Joi.boolean().required()
+    email: Joi.string().email().required()
 });
 
 const JLoginResponse = Joi.object({

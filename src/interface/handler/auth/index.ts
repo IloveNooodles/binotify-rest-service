@@ -28,8 +28,7 @@ const register = () => {
                 req.body.name,
                 req.body.username,
                 req.body.password,
-                req.body.email,
-                req.body.is_admin
+                req.body.email
             );
 
             const statusCode = result && result.error_code ? HttpStatus.StatusCodes.BAD_REQUEST : HttpStatus.StatusCodes.OK;

@@ -10,8 +10,7 @@ const registerUser = async (
     name: string,
     username: string,
     password: string,
-    email: string,
-    isAdmin: boolean
+    email: string
 ) => {
     try {
         await Pg.connect();
@@ -37,12 +36,13 @@ const registerUser = async (
         }
 
         const hashedPassword = hashPassword(password);
+        const DEFAULT_ROLE = false;
         const user: IInsertUser = {
             name: name,
             username: username,
             email: email,
             password: hashedPassword,
-            isAdmin: isAdmin
+            isAdmin: DEFAULT_ROLE
         };
 
         await insertUser(Pg, user);
