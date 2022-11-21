@@ -42,7 +42,7 @@ const getUserByUsername = async (db: any, username: string) => {
 
         userResult = userResult[0];
 
-        const user : IUser = {
+        const user: IUser = {
             id: userResult.user_id,
             name: userResult.name,
             username: userResult.username,
@@ -77,7 +77,7 @@ const getUserByEmail = async (db: any, email: string) => {
 
         userResult = userResult[0];
 
-        const user : IUser = {
+        const user: IUser = {
             id: userResult.user_id,
             name: userResult.name,
             username: userResult.username,

@@ -31,10 +31,17 @@ const register = () => {
                 req.body.email
             );
 
-            const statusCode = result && result.error_code ? HttpStatus.StatusCodes.BAD_REQUEST : HttpStatus.StatusCodes.OK;
+            const statusCode =
+                result && result.error_code
+                    ? HttpStatus.StatusCodes.BAD_REQUEST
+                    : HttpStatus.StatusCodes.OK;
             buildResponse(res, statusCode, result);
         } catch (error) {
-            buildResponse(res, HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR, error);
+            buildResponse(
+                res,
+                HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR,
+                error
+            );
         }
     };
 };

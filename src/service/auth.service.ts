@@ -1,10 +1,13 @@
 import Pg from '../infrastructure/database/postgresql';
 
 import { hashPassword, validatePassword } from '../util/security';
-import { insertUser, getUserByUsername, getUserByEmail } from '../interface/repository/user';
+import {
+    insertUser,
+    getUserByUsername,
+    getUserByEmail
+} from '../interface/repository/user';
 import { IInsertUser } from '../interface/repository/user/type';
 import { StandardError, ErrorCode, ErrorMessage } from '../common/error';
-
 
 const registerUser = async (
     name: string,

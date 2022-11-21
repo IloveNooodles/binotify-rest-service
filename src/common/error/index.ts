@@ -8,7 +8,7 @@ export enum ErrorCode {
     API_VALIDATION_ERROR = 'API_VALIDATION_ERROR',
     DATABASE_ERROR = 'DATABASE_ERROR',
     USERNAME_ALREADY_EXIST = 'USERNAME_ALREADY_EXIST',
-    EMAIL_ALREADY_EXIST = 'EMAIL_ALREADY_EXIST',
+    EMAIL_ALREADY_EXIST = 'EMAIL_ALREADY_EXIST'
 }
 
 export enum ErrorMessage {
@@ -16,5 +16,5 @@ export enum ErrorMessage {
     API_VALIDATION_ERROR = 'Your request is invalid',
     DATABASE_ERROR = 'Database error',
     USERNAME_ALREADY_EXIST = 'Username already exist',
-    EMAIL_ALREADY_EXIST = 'Email already exist',
+    EMAIL_ALREADY_EXIST = 'Email already exist'
 }
