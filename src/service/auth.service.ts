@@ -1,4 +1,5 @@
 import Pg from '../infrastructure/database/postgresql';
+import jwt from 'jsonwebtoken';
 
 import { hashPassword, validatePassword } from '../util/security';
 import {
@@ -54,4 +55,55 @@ const registerUser = async (
     }
 };
 
-export { registerUser };
+const loginUser = async (
+    username: string,
+    password: string
+): Promise<string | StandardError> => {
+    try {
+        await Pg.connect();
+
+        const user = await getUserByUsername(Pg, username);
+
+        if (user === null) {
+            const userNotFound: StandardError = {
+                error_code: ErrorCode.USER_NOT_FOUND,
+                message: ErrorMessage.USER_NOT_FOUND
+            };
+            return userNotFound;
+        }
+
+        const isPasswordValid: boolean = validatePassword(
+            password,
+            user.password
+        );
+
+        if (!isPasswordValid) {
+            const passwordInvalid: StandardError = {
+                error_code: ErrorCode.PASSWORD_INVALID,
+                message: ErrorMessage.PASSWORD_INVALID
+            };
+            return passwordInvalid;
+        }
+
+        const jwtSecretKey: string = process.env.JWT_SECRET as string;
+        const timeExpire: string = process.env.JWT_TIME_EXPIRE as string;
+        const token = jwt.sign(
+            {
+                id: user.id,
+                username: user.username,
+                email: user.email,
+                isAdmin: user.isAdmin
+            },
+            jwtSecretKey,
+            {
+                expiresIn: timeExpire
+            }
+        );
+
+        return token;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export { registerUser, loginUser };
