@@ -1,8 +1,10 @@
 import Pg from '../infrastructure/database/postgresql';
 
 import { hashPassword, validatePassword } from '../util/security';
-import { insertUser } from '../interface/repository/user';
+import { insertUser, getUserByUsername, getUserByEmail } from '../interface/repository/user';
 import { IInsertUser } from '../interface/repository/user/type';
+import { StandardError, ErrorCode, ErrorMessage } from '../common/error';
+
 
 const registerUser = async (
     name: string,
@@ -13,6 +15,26 @@ const registerUser = async (
 ) => {
     try {
         await Pg.connect();
+
+        const findUsername = await getUserByUsername(Pg, username);
+
+        if (findUsername !== null) {
+            const usernameInvalid: StandardError = {
+                error_code: ErrorCode.USERNAME_ALREADY_EXIST,
+                message: ErrorMessage.USERNAME_ALREADY_EXIST
+            };
+            return usernameInvalid;
+        }
+
+        const findEmail = await getUserByEmail(Pg, email);
+
+        if (findEmail !== null) {
+            const emailInvalid: StandardError = {
+                error_code: ErrorCode.EMAIL_ALREADY_EXIST,
+                message: ErrorMessage.EMAIL_ALREADY_EXIST
+            };
+            return emailInvalid;
+        }
 
         const hashedPassword = hashPassword(password);
         const user: IInsertUser = {

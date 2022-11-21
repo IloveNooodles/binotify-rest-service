@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken';
 import { getJwtSecretKey } from '../../../util/security';
 import { StandardError, ErrorCode, ErrorMessage } from '../../../common/error';
 import { registerUser } from '../../../service/auth.service';
+import { buildResponse } from '../../../middleware/build-response';
 
 const login = () => {
     return (req: Request, res: Response, next: NextFunction) => {
@@ -23,7 +24,7 @@ const login = () => {
 const register = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
-            await registerUser(
+            const result = await registerUser(
                 req.body.name,
                 req.body.username,
                 req.body.password,
@@ -31,11 +32,10 @@ const register = () => {
                 req.body.is_admin
             );
 
-            res.status(HttpStatus.StatusCodes.OK).send();
+            const statusCode = result && result.error_code ? HttpStatus.StatusCodes.BAD_REQUEST : HttpStatus.StatusCodes.OK;
+            buildResponse(res, statusCode, result);
         } catch (error) {
-            res.status(HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send(
-                error
-            );
+            buildResponse(res, HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR, error);
         }
     };
 };
