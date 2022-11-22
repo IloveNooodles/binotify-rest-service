@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import { getJwtSecretKey } from '../../../util/security';
 import { StandardError, ErrorCode, ErrorMessage } from '../../../common/error';
 import { registerUser, loginUser } from '../../../service/auth.service';
-import { buildResponse } from '../../../middleware/build-response';
+import { buildResponse } from '../../../util/build-response';
 
 const login = () => {
     return async (req: Request, res: Response, next: NextFunction) => {

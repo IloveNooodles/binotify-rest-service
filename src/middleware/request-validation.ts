@@ -3,6 +3,7 @@ import { NextFunction, Response } from 'express';
 import Joi from 'joi';
 
 import { StandardError, ErrorCode, ErrorMessage } from '../common/error';
+import { buildResponse } from '../util/build-response';
 
 type httprequest = 'body' | 'params' | 'query' | 'headers';
 
@@ -24,9 +25,9 @@ const validateRequest = (s: IHttpRequest) => {
                     error_code: ErrorCode.API_VALIDATION_ERROR,
                     message: ErrorMessage.API_VALIDATION_ERROR
                 };
-                return res
-                    .status(HttpStatus.StatusCodes.BAD_REQUEST)
-                    .send(error);
+
+                buildResponse(res, HttpStatus.StatusCodes.BAD_REQUEST, error);
+                return;
             }
         }
 

@@ -1,6 +1,7 @@
 import * as HttpStatus from 'http-status-codes';
 import { Request, Response, NextFunction } from 'express';
 import { StandardError, ErrorCode, ErrorMessage } from '../common/error';
+import { buildResponse } from '../util/build-response';
 
 const validateApiKey = (apiKey: string) => {
     return (req: Request, res: Response, next: NextFunction) => {
@@ -11,7 +12,8 @@ const validateApiKey = (apiKey: string) => {
                 message: ErrorMessage.INVALID_API_KEY
             };
 
-            return res.status(HttpStatus.StatusCodes.UNAUTHORIZED).send(error);
+            buildResponse(res, HttpStatus.StatusCodes.UNAUTHORIZED, error);
+            return;
         }
 
         next();
