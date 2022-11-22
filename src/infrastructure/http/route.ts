@@ -8,6 +8,8 @@ import {
 } from '../../interface/handler/auth/type';
 import { login, register } from '../../interface/handler/auth';
 import handleRequestAsync from '../../middleware/handle-request-async';
+import validateApiKey from '../../middleware/api-key-validation';
+import { getUser } from '../../interface/handler/user';
 
 const router = Router();
 
@@ -32,5 +34,7 @@ router.post(
     }),
     register()
 );
+
+router.get('/user', validateApiKey(), getUser());
 
 export default router;

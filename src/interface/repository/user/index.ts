@@ -17,7 +17,6 @@ const insertUser = async (db: any, user: IInsertUser) => {
             }
         });
     } catch (error) {
-        console.log(error);
         const dbError: StandardError = {
             error_code: ErrorCode.DATABASE_ERROR,
             message: ErrorMessage.DATABASE_ERROR
@@ -96,10 +95,39 @@ const getUserByEmail = async (db: any, email: string) => {
     }
 };
 
-// getUserByEmail(Pg, 'gdryrp@gmail.com').then((user) => {
-//     console.log(user);
-// }).catch((error) => {
-//     console.log(error);
-// });
+const getUserById = async (db: any, id: number) => {
+    try {
+        const prismaClient = await db.prisma();
 
-export { insertUser, getUserByUsername, getUserByEmail };
+        let userResult = await prismaClient.user.findMany({
+            where: {
+                user_id: id
+            }
+        });
+
+        if (userResult.length === 0) {
+            return null;
+        }
+
+        userResult = userResult[0];
+
+        const user: IUser = {
+            id: userResult.user_id,
+            name: userResult.name,
+            username: userResult.username,
+            email: userResult.email,
+            password: userResult.password,
+            isAdmin: userResult.is_admin
+        };
+
+        return user;
+    } catch (error) {
+        const dbError: StandardError = {
+            error_code: ErrorCode.DATABASE_ERROR,
+            message: ErrorMessage.DATABASE_ERROR
+        };
+        throw dbError;
+    }
+};
+
+export { insertUser, getUserByUsername, getUserByEmail, getUserById };

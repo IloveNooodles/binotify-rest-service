@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import * as HttpStatus from 'http-status-codes';
-import jwt from 'jsonwebtoken';
 
 import { getJwtSecretKey } from '../../../util/security';
 import { StandardError, ErrorCode, ErrorMessage } from '../../../common/error';
@@ -9,22 +8,30 @@ import { buildResponse } from '../../../util/build-response';
 
 const login = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
-        const username = req.body.username;
-        const password = req.body.password;
+        try {
+            const username = req.body.username;
+            const password = req.body.password;
 
-        const user = {
-            username: username,
-            password: password
-        };
+            const user = {
+                username: username,
+                password: password
+            };
 
-        const result = await loginUser(username, password);
+            const result = await loginUser(username, password);
 
-        if (typeof result !== 'string') {
-            buildResponse(res, HttpStatus.StatusCodes.BAD_REQUEST, result);
-        } else {
-            buildResponse(res, HttpStatus.StatusCodes.OK, {
-                token: result
-            });
+            if (typeof result !== 'string') {
+                buildResponse(res, HttpStatus.StatusCodes.BAD_REQUEST, result);
+            } else {
+                buildResponse(res, HttpStatus.StatusCodes.OK, {
+                    token: result
+                });
+            }
+        } catch (error) {
+            buildResponse(
+                res,
+                HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR,
+                error
+            );
         }
     };
 };

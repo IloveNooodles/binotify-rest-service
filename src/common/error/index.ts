@@ -10,7 +10,8 @@ export enum ErrorCode {
     USERNAME_ALREADY_EXIST = 'USERNAME_ALREADY_EXIST',
     EMAIL_ALREADY_EXIST = 'EMAIL_ALREADY_EXIST',
     USER_NOT_FOUND = 'USER_NOT_FOUND',
-    PASSWORD_INVALID = 'PASSWORD_INVALID'
+    PASSWORD_INVALID = 'PASSWORD_INVALID',
+    API_KEY_MISSING = 'API_KEY'
 }
 
 export enum ErrorMessage {
@@ -20,5 +21,6 @@ export enum ErrorMessage {
     USERNAME_ALREADY_EXIST = 'Username already exist',
     EMAIL_ALREADY_EXIST = 'Email already exist',
     USER_NOT_FOUND = 'User not found',
-    PASSWORD_INVALID = 'Password invalid'
+    PASSWORD_INVALID = 'Password invalid',
+    API_KEY_MISSING = 'API key is missing'
 }
