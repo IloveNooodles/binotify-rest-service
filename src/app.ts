@@ -17,14 +17,7 @@ class App {
                     arg1: boolean | undefined
                 ) => void
             ) {
-                if (!origin) {
-                    return callback(null, true);
-                }
-                if (whitelist.indexOf(origin) !== -1) {
-                    callback(null, true);
-                } else {
-                    callback(new Error('Not allowed by CORS'), undefined);
-                }
+                return callback(null, true);
             }
         };
         this.server.use(cors(corsOptions));
