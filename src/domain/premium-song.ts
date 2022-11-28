@@ -1,4 +1,4 @@
-export interface ISong {
+export interface IPremiumSong {
     id: number;
     title: string;
     singer_id: number;
