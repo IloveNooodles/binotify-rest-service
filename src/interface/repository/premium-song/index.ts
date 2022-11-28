@@ -22,17 +22,37 @@ const insertPremiumSong = async (db: any, premiumSong: IInsertPremiumSong) => {
     }
 };
 
-const getPremiumSongBySingerId = async (db: any, singer_id: number) => {
+const getPremiumSongBySingerId = async (
+    db: any,
+    singer_id: number,
+    offset: number,
+    limit: number
+): Promise<IPremiumSong[]> => {
     try {
         const prismaClient = await db.prisma();
 
-        let premiumSongResult = await prismaClient.song.findMany({
+        const premiumSongResult = await prismaClient.song.findMany({
             where: {
                 penyanyi_id: singer_id
-            }
+            },
+            skip: offset,
+            take: limit
         });
 
-        return premiumSongResult;
+        const premiumSong: IPremiumSong[] = [];
+
+        for (let i = 0; i < premiumSongResult.length; i++) {
+            const premiumSongDetail: IPremiumSong = {
+                id: premiumSongResult[i].song_id,
+                title: premiumSongResult[i].judul,
+                audio_path: premiumSongResult[i].audio_path,
+                singer_id: premiumSongResult[i].penyanyi_id
+            };
+
+            premiumSong.push(premiumSongDetail);
+        }
+
+        return premiumSong;
     } catch (error) {
         const dbError: StandardError = {
             error_code: ErrorCode.DATABASE_ERROR,
@@ -102,9 +122,30 @@ const updatePremiumSong = async (
     }
 };
 
+const getCountPremiumSongBySingerId = async (db: any, singer_id: number) => {
+    try {
+        const prismaClient = await db.prisma();
+
+        const premiumSongResult = await prismaClient.song.count({
+            where: {
+                penyanyi_id: singer_id
+            }
+        });
+
+        return premiumSongResult;
+    } catch (error) {
+        const dbError: StandardError = {
+            error_code: ErrorCode.DATABASE_ERROR,
+            message: ErrorMessage.DATABASE_ERROR
+        };
+        throw dbError;
+    }
+};
+
 export {
     insertPremiumSong,
     getPremiumSongBySingerId,
     getPremiumSongById,
-    updatePremiumSong
+    updatePremiumSong,
+    getCountPremiumSongBySingerId
 };

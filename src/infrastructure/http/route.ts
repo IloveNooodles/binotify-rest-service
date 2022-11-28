@@ -6,10 +6,15 @@ import {
     JLoginRequest,
     JRegisterRequest
 } from '../../interface/handler/auth/type';
+import { JNewPremiumSong } from '../../interface/handler/premium_song/type';
 import { login, register } from '../../interface/handler/auth';
 import handleRequestAsync from '../../middleware/handle-request-async';
 import validateApiKey from '../../middleware/api-key-validation';
 import { getUser } from '../../interface/handler/user';
+import {
+    newPremiumSong,
+    findAllPremiumSong
+} from '../../interface/handler/premium_song';
 
 const router = Router();
 
@@ -36,5 +41,14 @@ router.post(
 );
 
 router.get('/user', validateApiKey(), getUser());
+
+router.post(
+    '/premium-song',
+    validateRequest({ body: JNewPremiumSong }),
+    validateApiKey(),
+    newPremiumSong()
+);
+
+router.get('/premium-song', validateApiKey(), findAllPremiumSong());
 
 export default router;
