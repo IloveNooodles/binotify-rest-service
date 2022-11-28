@@ -1,7 +1,6 @@
 import { IUser } from '../../../domain/user';
 import { IInsertUser } from './type';
 import { StandardError, ErrorCode, ErrorMessage } from '../../../common/error';
-import Pg from '../../../infrastructure/database/postgresql';
 
 const insertUser = async (db: any, user: IInsertUser) => {
     try {
