@@ -138,10 +138,29 @@ const updatePremiumSong = async (db: any, song: IPremiumSong) => {
     }
 };
 
+const deletePremiumSongById = async (db: any, song_id: number) => {
+    try {
+        const prismaClient = await db.prisma();
+
+        await prismaClient.song.delete({
+            where: {
+                song_id: song_id
+            }
+        });
+    } catch (error) {
+        const dbError: StandardError = {
+            error_code: ErrorCode.DATABASE_ERROR,
+            message: ErrorMessage.DATABASE_ERROR
+        };
+        throw dbError;
+    }
+};
+
 export {
     insertPremiumSong,
     selectPremiumSongBySingerId,
     selectPremiumSongById,
     updatePremiumSong,
-    countPremiumSongBySingerId
+    countPremiumSongBySingerId,
+    deletePremiumSongById
 };

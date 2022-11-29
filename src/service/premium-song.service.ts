@@ -10,7 +10,8 @@ import {
     selectPremiumSongBySingerId,
     countPremiumSongBySingerId,
     selectPremiumSongById,
-    updatePremiumSong
+    updatePremiumSong,
+    deletePremiumSongById
 } from '../interface/repository/premium-song';
 
 const createNewPremiumSong = async (
@@ -231,9 +232,71 @@ const updateSingerPremiumSong = async (
     }
 };
 
+const deleteSingerPremiumSong = async (
+    singer_id: number,
+    song_id: number | null
+): Promise<any> => {
+    try {
+        await Pg.connect();
+
+        const userDetail: IUser | null = await selectUserById(Pg, singer_id);
+
+        if (
+            userDetail === null ||
+            userDetail.isAdmin === null ||
+            userDetail.isAdmin === undefined
+        ) {
+            const userNotFound: StandardError = {
+                error_code: ErrorCode.USER_NOT_FOUND,
+                message: ErrorMessage.USER_NOT_FOUND
+            };
+            return userNotFound;
+        }
+
+        if (userDetail.isAdmin === true) {
+            const userInvalid: StandardError = {
+                error_code: ErrorCode.INVALID_USER_TYPE,
+                message: ErrorMessage.INVALID_USER_TYPE
+            };
+            return userInvalid;
+        }
+
+        if (song_id === null) {
+            const songNotFound: StandardError = {
+                error_code: ErrorCode.SONG_NOT_FOUND,
+                message: ErrorMessage.SONG_NOT_FOUND
+            };
+            return songNotFound;
+        }
+
+        const premiumSong = await selectPremiumSongById(Pg, song_id);
+
+        if (premiumSong === null) {
+            const songNotFound: StandardError = {
+                error_code: ErrorCode.SONG_NOT_FOUND,
+                message: ErrorMessage.SONG_NOT_FOUND
+            };
+            return songNotFound;
+        }
+
+        if (premiumSong.singer_id !== singer_id) {
+            const invalidSingerSong: StandardError = {
+                error_code: ErrorCode.INVALID_SINGER_SONG,
+                message: ErrorMessage.INVALID_SINGER_SONG
+            };
+            return invalidSingerSong;
+        }
+
+        await deletePremiumSongById(Pg, song_id);
+    } catch (error) {
+        throw error;
+    }
+};
+
 export {
     createNewPremiumSong,
     getSingerAllPremiumSong,
     getSingerPremiumSong,
-    updateSingerPremiumSong
+    updateSingerPremiumSong,
+    deleteSingerPremiumSong
 };

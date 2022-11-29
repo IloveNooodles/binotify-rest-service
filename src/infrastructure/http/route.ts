@@ -18,7 +18,8 @@ import {
     newPremiumSong,
     findSingerAllPremiumSong,
     findPremiumSong,
-    editPremiumSong
+    editPremiumSong,
+    deletePremiumSong
 } from '../../interface/handler/premium_song';
 
 const router = Router();
@@ -64,5 +65,7 @@ router.put(
     validateApiKey(),
     editPremiumSong()
 );
+
+router.delete('/premium-song/:song_id', validateApiKey(), deletePremiumSong());
 
 export default router;

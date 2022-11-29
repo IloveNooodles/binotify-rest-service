@@ -7,7 +7,8 @@ import {
     createNewPremiumSong,
     getSingerAllPremiumSong,
     getSingerPremiumSong,
-    updateSingerPremiumSong
+    updateSingerPremiumSong,
+    deleteSingerPremiumSong
 } from '../../../service/premium-song.service';
 import { IPremiumSong } from '../../../domain/premium-song';
 
@@ -113,9 +114,33 @@ const editPremiumSong = () => {
     };
 };
 
+const deletePremiumSong = () => {
+    return async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const user_id = req.body.user_id;
+            const song_id = Number(req.params.song_id) || null;
+
+            const result = await deleteSingerPremiumSong(user_id, song_id);
+
+            const statusCode = instanceOfStandardError(result)
+                ? HttpStatus.StatusCodes.BAD_REQUEST
+                : HttpStatus.StatusCodes.OK;
+
+            buildResponse(res, statusCode, result);
+        } catch (error) {
+            buildResponse(
+                res,
+                HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR,
+                error
+            );
+        }
+    };
+};
+
 export {
     newPremiumSong,
     findSingerAllPremiumSong,
     findPremiumSong,
-    editPremiumSong
+    editPremiumSong,
+    deletePremiumSong
 };
