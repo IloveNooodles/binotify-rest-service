@@ -9,7 +9,8 @@ import {
     insertPremiumSong,
     selectPremiumSongBySingerId,
     countPremiumSongBySingerId,
-    selectPremiumSongById
+    selectPremiumSongById,
+    updatePremiumSong
 } from '../interface/repository/premium-song';
 
 const createNewPremiumSong = async (
@@ -103,14 +104,6 @@ const getSingerPremiumSong = async (
 
         const userDetail: IUser | null = await selectUserById(Pg, singer_id);
 
-        if (song_id === null) {
-            const songNotFound: StandardError = {
-                error_code: ErrorCode.SONG_NOT_FOUND,
-                message: ErrorMessage.SONG_NOT_FOUND
-            };
-            return songNotFound;
-        }
-        
         if (
             userDetail === null ||
             userDetail.isAdmin === null ||
@@ -131,6 +124,14 @@ const getSingerPremiumSong = async (
             return userInvalid;
         }
 
+        if (song_id === null) {
+            const songNotFound: StandardError = {
+                error_code: ErrorCode.SONG_NOT_FOUND,
+                message: ErrorMessage.SONG_NOT_FOUND
+            };
+            return songNotFound;
+        }
+
         const premiumSongResult: IPremiumSong | null =
             await selectPremiumSongById(Pg, song_id);
 
@@ -143,17 +144,96 @@ const getSingerPremiumSong = async (
         }
 
         if (premiumSongResult.singer_id !== singer_id) {
-            const premiumSongNotFound: StandardError = {
+            const invalidSingerSong: StandardError = {
                 error_code: ErrorCode.INVALID_SINGER_SONG,
                 message: ErrorMessage.INVALID_SINGER_SONG
             };
-            return premiumSongNotFound;
+            return invalidSingerSong;
         }
 
-            return premiumSongResult;
+        return premiumSongResult;
     } catch (error) {
         throw error;
     }
 };
 
-export { createNewPremiumSong, getSingerAllPremiumSong, getSingerPremiumSong };
+const updateSingerPremiumSong = async (
+    singer_id: number,
+    song_id: number | null,
+    title: string | null,
+    audio_file: any
+): Promise<any> => {
+    try {
+        await Pg.connect();
+
+        const userDetail: IUser | null = await selectUserById(Pg, singer_id);
+
+        if (
+            userDetail === null ||
+            userDetail.isAdmin === null ||
+            userDetail.isAdmin === undefined
+        ) {
+            const userNotFound: StandardError = {
+                error_code: ErrorCode.USER_NOT_FOUND,
+                message: ErrorMessage.USER_NOT_FOUND
+            };
+            return userNotFound;
+        }
+
+        if (userDetail.isAdmin === true) {
+            const userInvalid: StandardError = {
+                error_code: ErrorCode.INVALID_USER_TYPE,
+                message: ErrorMessage.INVALID_USER_TYPE
+            };
+            return userInvalid;
+        }
+
+        if (song_id === null) {
+            const songNotFound: StandardError = {
+                error_code: ErrorCode.SONG_NOT_FOUND,
+                message: ErrorMessage.SONG_NOT_FOUND
+            };
+            return songNotFound;
+        }
+
+        const premiumSong = await selectPremiumSongById(Pg, song_id);
+
+        if (premiumSong === null) {
+            const songNotFound: StandardError = {
+                error_code: ErrorCode.SONG_NOT_FOUND,
+                message: ErrorMessage.SONG_NOT_FOUND
+            };
+            return songNotFound;
+        }
+
+        if (premiumSong.singer_id !== singer_id) {
+            const invalidSingerSong: StandardError = {
+                error_code: ErrorCode.INVALID_SINGER_SONG,
+                message: ErrorMessage.INVALID_SINGER_SONG
+            };
+            return invalidSingerSong;
+        }
+
+        if (title !== null && title !== '') {
+            premiumSong.title = title;
+        }
+
+        if (audio_file !== null) {
+            // const uploadedFile: string = await postAudio(audio_file);
+            const uploadedFile: string = 'enggak';
+
+            premiumSong.audio_path = uploadedFile;
+        }
+
+        await updatePremiumSong(Pg, premiumSong);
+    } catch (error) {
+        throw error;
+    }
+};
+
+export {
+    createNewPremiumSong,
+    getSingerAllPremiumSong,
+    getSingerPremiumSong,
+    updateSingerPremiumSong
+};

@@ -5,4 +5,9 @@ const JNewPremiumSong = Joi.object({
     audio_file: Joi.string().required()
 });
 
-export { JNewPremiumSong };
+const JUpdatePremiumSong = Joi.object({
+    title: Joi.string(),
+    audio_file: Joi.string()
+});
+
+export { JNewPremiumSong, JUpdatePremiumSong };

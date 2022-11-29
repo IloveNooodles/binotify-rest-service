@@ -6,7 +6,10 @@ import {
     JLoginRequest,
     JRegisterRequest
 } from '../../interface/handler/auth/type';
-import { JNewPremiumSong } from '../../interface/handler/premium_song/type';
+import {
+    JNewPremiumSong,
+    JUpdatePremiumSong
+} from '../../interface/handler/premium_song/type';
 import { login, register } from '../../interface/handler/auth';
 import handleRequestAsync from '../../middleware/handle-request-async';
 import validateApiKey from '../../middleware/api-key-validation';
@@ -14,7 +17,8 @@ import { getUser } from '../../interface/handler/user';
 import {
     newPremiumSong,
     findSingerAllPremiumSong,
-    findPremiumSong
+    findPremiumSong,
+    editPremiumSong
 } from '../../interface/handler/premium_song';
 
 const router = Router();
@@ -52,10 +56,13 @@ router.post(
 
 router.get('/premium-song', validateApiKey(), findSingerAllPremiumSong());
 
-router.get(
+router.get('/premium-song/:song_id', validateApiKey(), findPremiumSong());
+
+router.put(
     '/premium-song/:song_id',
+    validateRequest({ body: JUpdatePremiumSong }),
     validateApiKey(),
-    findPremiumSong()
-)
+    editPremiumSong()
+);
 
 export default router;

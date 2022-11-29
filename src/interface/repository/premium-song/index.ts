@@ -95,33 +95,6 @@ const selectPremiumSongById = async (db: any, song_id: number) => {
     }
 };
 
-const updatePremiumSong = async (
-    db: any,
-    song_id: number,
-    premiumSong: IInsertPremiumSong
-) => {
-    try {
-        const prismaClient = await db.prisma();
-
-        await prismaClient.song.update({
-            where: {
-                song_id: song_id
-            },
-            data: {
-                judul: premiumSong.title,
-                audio_path: premiumSong.audio_path,
-                penyanyi_id: premiumSong.user_id
-            }
-        });
-    } catch (error) {
-        const dbError: StandardError = {
-            error_code: ErrorCode.DATABASE_ERROR,
-            message: ErrorMessage.DATABASE_ERROR
-        };
-        throw dbError;
-    }
-};
-
 const countPremiumSongBySingerId = async (db: any, singer_id: number) => {
     try {
         const prismaClient = await db.prisma();
@@ -133,6 +106,29 @@ const countPremiumSongBySingerId = async (db: any, singer_id: number) => {
         });
 
         return premiumSongResult;
+    } catch (error) {
+        const dbError: StandardError = {
+            error_code: ErrorCode.DATABASE_ERROR,
+            message: ErrorMessage.DATABASE_ERROR
+        };
+        throw dbError;
+    }
+};
+
+const updatePremiumSong = async (db: any, song: IPremiumSong) => {
+    try {
+        const prismaClient = await db.prisma();
+
+        await prismaClient.song.update({
+            where: {
+                song_id: song.id
+            },
+            data: {
+                judul: song.title,
+                audio_path: song.audio_path,
+                penyanyi_id: song.singer_id
+            }
+        });
     } catch (error) {
         const dbError: StandardError = {
             error_code: ErrorCode.DATABASE_ERROR,
