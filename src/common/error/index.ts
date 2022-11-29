@@ -12,7 +12,9 @@ export enum ErrorCode {
     USER_NOT_FOUND = 'USER_NOT_FOUND',
     PASSWORD_INVALID = 'PASSWORD_INVALID',
     API_KEY_MISSING = 'API_KEY',
-    INVALID_USER_TYPE = 'INVALID_USER_TYPE'
+    INVALID_USER_TYPE = 'INVALID_USER_TYPE',
+    SONG_NOT_FOUND = 'SONG_NOT_FOUND',
+    INVALID_SINGER_SONG = 'INVALID_SINGER_SONG'
 }
 
 export enum ErrorMessage {
@@ -24,5 +26,7 @@ export enum ErrorMessage {
     USER_NOT_FOUND = 'User not found',
     PASSWORD_INVALID = 'Password invalid',
     API_KEY_MISSING = 'API key is missing',
-    INVALID_USER_TYPE = 'Invalid user type'
+    INVALID_USER_TYPE = 'Invalid user type',
+    SONG_NOT_FOUND = 'Song not found',
+    INVALID_SINGER_SONG = 'The singer does not have this song'
 }

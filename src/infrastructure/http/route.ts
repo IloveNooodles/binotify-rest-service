@@ -13,7 +13,8 @@ import validateApiKey from '../../middleware/api-key-validation';
 import { getUser } from '../../interface/handler/user';
 import {
     newPremiumSong,
-    findAllPremiumSong
+    findSingerAllPremiumSong,
+    findPremiumSong
 } from '../../interface/handler/premium_song';
 
 const router = Router();
@@ -49,6 +50,12 @@ router.post(
     newPremiumSong()
 );
 
-router.get('/premium-song', validateApiKey(), findAllPremiumSong());
+router.get('/premium-song', validateApiKey(), findSingerAllPremiumSong());
+
+router.get(
+    '/premium-song/:song_id',
+    validateApiKey(),
+    findPremiumSong()
+)
 
 export default router;
