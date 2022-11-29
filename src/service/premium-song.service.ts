@@ -88,6 +88,7 @@ const getSingerAllPremiumSong = async (
 
         return {
             page: page,
+            maximum_page: Math.ceil(overallPremiumSong / limit),
             count_all_singer_song: overallPremiumSong,
             premium_song: premiumSongResult
         };
