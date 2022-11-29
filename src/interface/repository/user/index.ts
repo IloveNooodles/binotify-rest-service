@@ -24,7 +24,7 @@ const insertUser = async (db: any, user: IInsertUser) => {
     }
 };
 
-const getUserByUsername = async (db: any, username: string) => {
+const selectUserByUsername = async (db: any, username: string) => {
     try {
         const prismaClient = await db.prisma();
 
@@ -59,7 +59,7 @@ const getUserByUsername = async (db: any, username: string) => {
     }
 };
 
-const getUserByEmail = async (db: any, email: string) => {
+const selectUserByEmail = async (db: any, email: string) => {
     try {
         const prismaClient = await db.prisma();
 
@@ -94,7 +94,7 @@ const getUserByEmail = async (db: any, email: string) => {
     }
 };
 
-const getUserById = async (db: any, id: number) => {
+const selectUserById = async (db: any, id: number) => {
     try {
         const prismaClient = await db.prisma();
 
@@ -129,4 +129,4 @@ const getUserById = async (db: any, id: number) => {
     }
 };
 
-export { insertUser, getUserByUsername, getUserByEmail, getUserById };
+export { insertUser, selectUserByUsername, selectUserByEmail, selectUserById };

@@ -22,7 +22,7 @@ const insertPremiumSong = async (db: any, premiumSong: IInsertPremiumSong) => {
     }
 };
 
-const getPremiumSongBySingerId = async (
+const selectPremiumSongBySingerId = async (
     db: any,
     singer_id: number,
     offset: number,
@@ -62,7 +62,7 @@ const getPremiumSongBySingerId = async (
     }
 };
 
-const getPremiumSongById = async (db: any, song_id: number) => {
+const selectPremiumSongById = async (db: any, song_id: number) => {
     try {
         const prismaClient = await db.prisma();
 
@@ -122,7 +122,7 @@ const updatePremiumSong = async (
     }
 };
 
-const getCountPremiumSongBySingerId = async (db: any, singer_id: number) => {
+const countPremiumSongBySingerId = async (db: any, singer_id: number) => {
     try {
         const prismaClient = await db.prisma();
 
@@ -144,8 +144,8 @@ const getCountPremiumSongBySingerId = async (db: any, singer_id: number) => {
 
 export {
     insertPremiumSong,
-    getPremiumSongBySingerId,
-    getPremiumSongById,
+    selectPremiumSongBySingerId,
+    selectPremiumSongById,
     updatePremiumSong,
-    getCountPremiumSongBySingerId
+    countPremiumSongBySingerId
 };

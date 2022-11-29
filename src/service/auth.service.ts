@@ -4,8 +4,8 @@ import jwt from 'jsonwebtoken';
 import { hashPassword, validatePassword } from '../util/security';
 import {
     insertUser,
-    getUserByUsername,
-    getUserByEmail
+    selectUserByUsername,
+    selectUserByEmail
 } from '../interface/repository/user';
 import { IInsertUser } from '../interface/repository/user/type';
 import { StandardError, ErrorCode, ErrorMessage } from '../common/error';
@@ -19,7 +19,7 @@ const registerUser = async (
     try {
         await Pg.connect();
 
-        const findUsername = await getUserByUsername(Pg, username);
+        const findUsername = await selectUserByUsername(Pg, username);
 
         if (findUsername !== null) {
             const usernameInvalid: StandardError = {
@@ -29,7 +29,7 @@ const registerUser = async (
             return usernameInvalid;
         }
 
-        const findEmail = await getUserByEmail(Pg, email);
+        const findEmail = await selectUserByEmail(Pg, email);
 
         if (findEmail !== null) {
             const emailInvalid: StandardError = {
@@ -62,7 +62,7 @@ const loginUser = async (
     try {
         await Pg.connect();
 
-        const user = await getUserByUsername(Pg, username);
+        const user = await selectUserByUsername(Pg, username);
 
         if (user === null) {
             const userNotFound: StandardError = {
