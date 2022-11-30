@@ -4,12 +4,6 @@ import SubscriptionService from '../../infrastructure/client/subscription-servic
 const SUBSCRIPTION_ENDPOINT = 'api/subscription';
 
 const getUserSingerList = async (binotify_user_id: number) => {
-    /*
-     * Get user's singer list
-     * @param binotify_user_id: number
-     * @return singerList: IUser[]
-     */
-
     const funcName = 'getAcceptedSubscriptionBySubcriptionId';
     const payload = `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
         <Body>
@@ -29,11 +23,6 @@ const getUserSingerList = async (binotify_user_id: number) => {
 };
 
 const getPendingSubscriptionList = async () => {
-    /*
-     * Get pending subscription list
-     * @return pendingSubscriptionList: ISubscription[]
-     */
-
     const funcName = 'fetchPendingSubscription';
     const payload = `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
         <Body>
@@ -51,13 +40,6 @@ const getPendingSubscriptionList = async () => {
 };
 
 const isSubscribed = async (binotify_user_id: number, singer_id: number) => {
-    /*
-     * Check if user is subscribed to singer
-     * @param binotify_user_id: number
-     * @param singer_id: number
-     * @return isSubscribed: boolean
-     */
-
     const funcName = 'checkStatus';
     const payload = `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
         <Body>
@@ -78,12 +60,6 @@ const isSubscribed = async (binotify_user_id: number, singer_id: number) => {
 };
 
 const acceptSubscription = async (subscription_id: number) => {
-    /*
-     * Accept subscription
-     * @param subscription_id: number
-     * @return null
-     */
-
     const funcName = 'acceptSubscription';
     const payload = `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
         <Body>
@@ -104,12 +80,6 @@ const acceptSubscription = async (subscription_id: number) => {
 };
 
 const rejectSubscription = async (subscription_id: number) => {
-    /*
-     * Reject subscription
-     * @param subscription_id: number
-     * @return null
-     */
-
     const funcName = 'subscribe';
     const payload = `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
         <Body>
