@@ -10,7 +10,6 @@ import {
     updateSingerPremiumSong,
     deleteSingerPremiumSong
 } from '../../../service/premium-song.service';
-import { IPremiumSong } from '../../../domain/premium-song';
 
 const newPremiumSong = () => {
     return async (req: Request, res: Response, next: NextFunction) => {

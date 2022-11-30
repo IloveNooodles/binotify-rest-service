@@ -15,7 +15,12 @@ export default class SubscriptionService {
     }
 
     public static async get(path: string): Promise<any> {
-        const response = await fetch(SUBSCRIPTION_SERVICE_BASE_URL + path);
+        const response = await fetch(SUBSCRIPTION_SERVICE_BASE_URL + path, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/xml'
+            }
+        });
 
         return response.json();
     }

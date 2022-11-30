@@ -14,7 +14,9 @@ export enum ErrorCode {
     API_KEY_MISSING = 'API_KEY',
     INVALID_USER_TYPE = 'INVALID_USER_TYPE',
     SONG_NOT_FOUND = 'SONG_NOT_FOUND',
-    INVALID_SINGER_SONG = 'INVALID_SINGER_SONG'
+    INVALID_SINGER_SONG = 'INVALID_SINGER_SONG',
+    NOT_SUBSCRIBED = 'NOT_SUBSCRIBED',
+    SINGER_NOT_FOUND = 'SINGER_NOT_FOUND',
 }
 
 export enum ErrorMessage {
@@ -28,5 +30,7 @@ export enum ErrorMessage {
     API_KEY_MISSING = 'API key is missing',
     INVALID_USER_TYPE = 'Invalid user type',
     SONG_NOT_FOUND = 'Song not found',
-    INVALID_SINGER_SONG = 'The singer does not have this song'
+    INVALID_SINGER_SONG = 'The singer does not have this song',
+    NOT_SUBSCRIBED = 'You are not subscribed',
+    SINGER_NOT_FOUND = 'Singer not found',
 }

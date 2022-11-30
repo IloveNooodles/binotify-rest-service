@@ -254,7 +254,7 @@ const __validateSingerRole = async (singer_id: number): Promise<boolean> => {
     }
 
     return true;
-}
+};
 
 export {
     createNewPremiumSong,
