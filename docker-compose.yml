@@ -1,23 +1,23 @@
 version: "3.8"
 services:
-  web:
-    container_name: binotify-rest-services
-    hostname: web
+  binotify-rest-service-server:
+    container_name: binotify-rest-service-server
+    hostname: binotify-rest-service-server
     env_file: .env
     build: .
     ports:
-      - "8000:3333"
+      - "7000:3333"
     networks:
       - rest-service
     depends_on:
-      db:
+      binotify-rest-service-db:
         condition: service_healthy
-      cache:
+      binotify-rest-service-cache:
         condition: service_started
-  db:
-    container_name: postgres
+  binotify-rest-service-db:
+    container_name: binotify-rest-service-db
     image: postgres:13.9-alpine3.16
-    hostname: postgres
+    hostname: binotify-rest-service-db
     volumes:
       - ./pgdata:/var/lib/postgresql/data
       - ./migration/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -29,20 +29,20 @@ services:
     env_file: .env
     restart: always
     ports:
-      - "8001:5432"
+      - "7001:5432"
     networks:
       - rest-service
-  cache:
+  binotify-rest-service-cache:
     image: redis:alpine3.16
-    container_name: redis
-    hostname: redis
+    container_name: binotify-rest-service-cache
+    hostname: binotify-rest-service-cache
     env_file: .env
     networks:
       - rest-service
     ports:
-      - "6379:6379"
+      - "7002:6379"
     depends_on:
-      - db
+      - binotify-rest-service-db
     volumes:
       - ./cache:/data
     command:

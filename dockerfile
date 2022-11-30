@@ -5,10 +5,12 @@ WORKDIR /app
 COPY ./package.json .
 COPY ./yarn.lock .
 
+RUN apk add --update python3 make g++\
+   && rm -rf /var/cache/apk/*
 RUN yarn install
 
 COPY . .
 
-CMD [ "yarn", "start:dev" ]
+EXPOSE 7000
 
-EXPOSE 3333
+CMD [ "yarn", "start:prod" ]
