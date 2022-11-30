@@ -22,6 +22,14 @@ const createNewPremiumSong = async (
     try {
         await Pg.connect();
 
+        if (title === null || title === '' || title === undefined || audio_file === null || audio_file === '' || audio_file === undefined) {
+            const invalidInput: StandardError = {
+                error_code: ErrorCode.INVALID_INPUT,
+                message: ErrorMessage.INVALID_INPUT
+            };
+            return invalidInput;
+        }
+
         const isValidSinger = __validateSingerRole(singer_id);
         if (!isValidSinger) {
             const userNotFound: StandardError = {
@@ -33,6 +41,9 @@ const createNewPremiumSong = async (
 
         // const uploadedFile: string = await postAudio(audio_file);
         const uploadedFile: string = 'ya';
+
+        console.log(title);
+        console.log(audio_file);
 
         const premiumSong: IInsertPremiumSong = {
             title: title,
@@ -199,6 +210,14 @@ const deleteSingerPremiumSong = async (
 ): Promise<any> => {
     try {
         await Pg.connect();
+
+        if (singer_id === null || singer_id === undefined) {
+            const userNotFound: StandardError = {
+                error_code: ErrorCode.USER_NOT_FOUND,
+                message: ErrorMessage.USER_NOT_FOUND
+            };
+            return userNotFound;
+        }
 
         const isValidSinger = __validateSingerRole(singer_id);
         if (!isValidSinger) {
