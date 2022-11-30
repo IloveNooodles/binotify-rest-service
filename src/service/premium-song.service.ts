@@ -15,16 +15,15 @@ import {
 } from '../interface/repository/premium-song';
 
 const createNewPremiumSong = async (
-    user_id: number,
+    singer_id: number,
     title: string,
     audio_file: any
 ) => {
     try {
         await Pg.connect();
 
-        const userDetail: IUser | null = await selectUserById(Pg, user_id);
-
-        if (userDetail === null) {
+        const isValidSinger = __validateSingerRole(singer_id);
+        if (!isValidSinger) {
             const userNotFound: StandardError = {
                 error_code: ErrorCode.USER_NOT_FOUND,
                 message: ErrorMessage.USER_NOT_FOUND
@@ -38,7 +37,7 @@ const createNewPremiumSong = async (
         const premiumSong: IInsertPremiumSong = {
             title: title,
             audio_path: uploadedFile,
-            user_id: user_id
+            user_id: singer_id
         };
 
         await insertPremiumSong(Pg, premiumSong);
@@ -56,26 +55,13 @@ const getSingerAllPremiumSong = async (
     try {
         await Pg.connect();
 
-        const userDetail: IUser | null = await selectUserById(Pg, singer_id);
-
-        if (
-            userDetail === null ||
-            userDetail.isAdmin === null ||
-            userDetail.isAdmin === undefined
-        ) {
+        const isValidSinger = __validateSingerRole(singer_id);
+        if (!isValidSinger) {
             const userNotFound: StandardError = {
                 error_code: ErrorCode.USER_NOT_FOUND,
                 message: ErrorMessage.USER_NOT_FOUND
             };
             return userNotFound;
-        }
-
-        if (userDetail.isAdmin === true) {
-            const userInvalid: StandardError = {
-                error_code: ErrorCode.INVALID_USER_TYPE,
-                message: ErrorMessage.INVALID_USER_TYPE
-            };
-            return userInvalid;
         }
 
         const offset = (page - 1) * limit;
@@ -104,26 +90,13 @@ const getSingerPremiumSong = async (
     try {
         await Pg.connect();
 
-        const userDetail: IUser | null = await selectUserById(Pg, singer_id);
-
-        if (
-            userDetail === null ||
-            userDetail.isAdmin === null ||
-            userDetail.isAdmin === undefined
-        ) {
+        const isValidSinger = __validateSingerRole(singer_id);
+        if (!isValidSinger) {
             const userNotFound: StandardError = {
                 error_code: ErrorCode.USER_NOT_FOUND,
                 message: ErrorMessage.USER_NOT_FOUND
             };
             return userNotFound;
-        }
-
-        if (userDetail.isAdmin === true) {
-            const userInvalid: StandardError = {
-                error_code: ErrorCode.INVALID_USER_TYPE,
-                message: ErrorMessage.INVALID_USER_TYPE
-            };
-            return userInvalid;
         }
 
         if (song_id === null) {
@@ -168,26 +141,13 @@ const updateSingerPremiumSong = async (
     try {
         await Pg.connect();
 
-        const userDetail: IUser | null = await selectUserById(Pg, singer_id);
-
-        if (
-            userDetail === null ||
-            userDetail.isAdmin === null ||
-            userDetail.isAdmin === undefined
-        ) {
+        const isValidSinger = __validateSingerRole(singer_id);
+        if (!isValidSinger) {
             const userNotFound: StandardError = {
                 error_code: ErrorCode.USER_NOT_FOUND,
                 message: ErrorMessage.USER_NOT_FOUND
             };
             return userNotFound;
-        }
-
-        if (userDetail.isAdmin === true) {
-            const userInvalid: StandardError = {
-                error_code: ErrorCode.INVALID_USER_TYPE,
-                message: ErrorMessage.INVALID_USER_TYPE
-            };
-            return userInvalid;
         }
 
         if (song_id === null) {
@@ -240,26 +200,13 @@ const deleteSingerPremiumSong = async (
     try {
         await Pg.connect();
 
-        const userDetail: IUser | null = await selectUserById(Pg, singer_id);
-
-        if (
-            userDetail === null ||
-            userDetail.isAdmin === null ||
-            userDetail.isAdmin === undefined
-        ) {
+        const isValidSinger = __validateSingerRole(singer_id);
+        if (!isValidSinger) {
             const userNotFound: StandardError = {
                 error_code: ErrorCode.USER_NOT_FOUND,
                 message: ErrorMessage.USER_NOT_FOUND
             };
             return userNotFound;
-        }
-
-        if (userDetail.isAdmin === true) {
-            const userInvalid: StandardError = {
-                error_code: ErrorCode.INVALID_USER_TYPE,
-                message: ErrorMessage.INVALID_USER_TYPE
-            };
-            return userInvalid;
         }
 
         if (song_id === null) {
@@ -293,6 +240,21 @@ const deleteSingerPremiumSong = async (
         throw error;
     }
 };
+
+const __validateSingerRole = async (singer_id: number): Promise<boolean> => {
+    const userDetail: IUser | null = await selectUserById(Pg, singer_id);
+
+    if (
+        userDetail === null ||
+        userDetail.isAdmin === null ||
+        userDetail.isAdmin === undefined ||
+        userDetail.isAdmin === true
+    ) {
+        return false;
+    }
+
+    return true;
+}
 
 export {
     createNewPremiumSong,
