@@ -2,29 +2,51 @@ import Pg from '../infrastructure/database/postgresql';
 import { IPremiumSong } from '../domain/premium-song';
 import { IUser } from '../domain/user';
 import {
-    selectUserById,
     selectSingerById,
     selectAllSinger
 } from '../interface/repository/user';
 import { StandardError, ErrorCode, ErrorMessage } from '../common/error';
-import { isSubscribed } from '../interface/client/subscription';
+import {
+    getUserSingerList,
+    isSubscribed
+} from '../interface/client/subscription';
 import { selectPremiumSongBySingerId } from '../interface/repository/premium-song';
 
 const MIN_OFFSET = 0;
 const MAX_LIMIT = 9999;
 
-const getAllSinger = async () => {
+const getAllSinger = async (binotify_user_id: number | null) => {
     try {
         await Pg.connect();
 
-        const singerList = await selectAllSinger(Pg);
+        if (binotify_user_id === null) {
+            const userNotFound: StandardError = {
+                error_code: ErrorCode.USER_NOT_FOUND,
+                message: ErrorMessage.USER_NOT_FOUND
+            };
+            return userNotFound;
+        }
 
+        const singerList = await selectAllSinger(Pg);
+        const userSubsctipionList = await getUserSingerList(binotify_user_id);
+
+        const SUBSCRIPTION_NOT_FOUND = 'SUBSCRIPTION_NOT_FOUND';
         const filteredSingerList = singerList.map((singer: IUser) => {
+            let subscriptionStatus = SUBSCRIPTION_NOT_FOUND;
+
+            for (let i = 0; i < userSubsctipionList.length; i++) {
+                if (userSubsctipionList[i].creator_id === singer.id) {
+                    subscriptionStatus = userSubsctipionList[i].status;
+                    break;
+                }
+            }
+
             const filteredSinger = {
                 id: singer.id,
                 name: singer.name,
                 username: singer.username,
-                email: singer.email
+                email: singer.email,
+                subscription_status: subscriptionStatus
             };
             return filteredSinger;
         });
@@ -43,20 +65,20 @@ const getSingerPremiumSong = async (
         await Pg.connect();
 
         if (singer_id === null) {
-            const userNotFound: StandardError = {
+            const singerNotFound: StandardError = {
                 error_code: ErrorCode.SINGER_NOT_FOUND,
                 message: ErrorMessage.SINGER_NOT_FOUND
             };
-            return userNotFound;
+            return singerNotFound;
         }
 
         const singerDetail = await selectSingerById(Pg, singer_id);
         if (singerDetail === null) {
-            const userNotFound: StandardError = {
+            const singerNotFound: StandardError = {
                 error_code: ErrorCode.SINGER_NOT_FOUND,
                 message: ErrorMessage.SINGER_NOT_FOUND
             };
-            return userNotFound;
+            return singerNotFound;
         }
 
         if (binotify_user_id === null) {

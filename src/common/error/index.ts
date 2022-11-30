@@ -17,6 +17,11 @@ export enum ErrorCode {
     INVALID_SINGER_SONG = 'INVALID_SINGER_SONG',
     NOT_SUBSCRIBED = 'NOT_SUBSCRIBED',
     SINGER_NOT_FOUND = 'SINGER_NOT_FOUND',
+    INVALID_STATUS = 'INVALID_STATUS',
+    SUBSCRIPTION_NOT_FOUND = 'SUBSCRIPTION_NOT_FOUND',
+    NOT_AUTHENTICATED = 'NOT_AUTHENTICATED',
+    INVALID_SUBSCRIPTION_ID = 'INVALID_SUBSCRIPTION_ID',
+    INVALID_INPUT = 'INVALID_INPUT',
 }
 
 export enum ErrorMessage {
@@ -33,4 +38,9 @@ export enum ErrorMessage {
     INVALID_SINGER_SONG = 'The singer does not have this song',
     NOT_SUBSCRIBED = 'You are not subscribed',
     SINGER_NOT_FOUND = 'Singer not found',
+    INVALID_STATUS = 'Invalid status',
+    SUBSCRIPTION_NOT_FOUND = 'Subscription not found',
+    NOT_AUTHENTICATED = 'service not authenticated with soap server',
+    INVALID_SUBSCRIPTION_ID = 'Invalid subscription id',
+    INVALID_INPUT = 'Invalid input',
 }

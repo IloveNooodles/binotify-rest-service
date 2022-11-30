@@ -25,6 +25,10 @@ import {
     findAllSinger,
     findSingerAllPremiumSongWithUserId
 } from '../../interface/handler/singer';
+import {
+    fetchAllPendingSubscription,
+    updateSubscriptionStatusById
+} from '../../interface/handler/subscription';
 
 const router = Router();
 
@@ -54,7 +58,6 @@ router.get('/user', validateApiKey(), getUser());
 
 router.post(
     '/premium-song',
-    validateRequest({ body: JNewPremiumSong }),
     validateApiKey(),
     newPremiumSong()
 );
@@ -75,5 +78,13 @@ router.delete('/premium-song/:song_id', validateApiKey(), deletePremiumSong());
 router.get('/singer', findAllSinger());
 
 router.get('/singer/:singer_id', findSingerAllPremiumSongWithUserId());
+
+router.get('/subscription', validateApiKey(), fetchAllPendingSubscription());
+
+router.post(
+    '/subscription/decision',
+    validateApiKey(),
+    updateSubscriptionStatusById()
+);
 
 export default router;
