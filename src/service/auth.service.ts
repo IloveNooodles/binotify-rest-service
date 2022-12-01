@@ -39,6 +39,17 @@ const registerUser = async (
             return emailInvalid;
         }
 
+        const usernameRegex = /^[a-zA-Z0-9_]+$/;
+        const isUsernameValid = usernameRegex.test(username);
+
+        if (!isUsernameValid) {
+            const usernameInvalid: StandardError = {
+                error_code: ErrorCode.INVALID_USERNAME,
+                message: ErrorMessage.INVALID_USERNAME
+            };
+            return usernameInvalid;
+        }
+
         const hashedPassword = hashPassword(password);
         const DEFAULT_ROLE = false;
         const user: IInsertUser = {
