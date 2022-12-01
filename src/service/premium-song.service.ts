@@ -59,7 +59,7 @@ const getSingerAllPremiumSong = async (
     try {
         await Pg.connect();
 
-        const isValidSinger = __validateSingerRole(singer_id);
+        const isValidSinger = await __validateSingerRole(singer_id);
         if (!isValidSinger) {
             const userNotFound: StandardError = {
                 error_code: ErrorCode.USER_NOT_FOUND,
@@ -94,7 +94,7 @@ const getSingerPremiumSong = async (
     try {
         await Pg.connect();
 
-        const isValidSinger = __validateSingerRole(singer_id);
+        const isValidSinger = await __validateSingerRole(singer_id);
         if (!isValidSinger) {
             const userNotFound: StandardError = {
                 error_code: ErrorCode.USER_NOT_FOUND,
@@ -145,7 +145,7 @@ const updateSingerPremiumSong = async (
     try {
         await Pg.connect();
 
-        const isValidSinger = __validateSingerRole(singer_id);
+        const isValidSinger = await __validateSingerRole(singer_id);
         if (!isValidSinger) {
             const userNotFound: StandardError = {
                 error_code: ErrorCode.USER_NOT_FOUND,
@@ -210,7 +210,7 @@ const deleteSingerPremiumSong = async (
             return userNotFound;
         }
 
-        const isValidSinger = __validateSingerRole(singer_id);
+        const isValidSinger = await __validateSingerRole(singer_id);
         if (!isValidSinger) {
             const userNotFound: StandardError = {
                 error_code: ErrorCode.USER_NOT_FOUND,
