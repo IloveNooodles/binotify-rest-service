@@ -179,6 +179,10 @@ const selectSingerById = async (db: any, id: number) => {
             return null;
         }
 
+        if (userResult.length < 1) {
+            return null;
+        }
+
         userResult = userResult[0];
 
         const user: IUser = {

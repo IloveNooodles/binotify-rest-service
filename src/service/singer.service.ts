@@ -8,7 +8,7 @@ import {
 import { StandardError, ErrorCode, ErrorMessage } from '../common/error';
 import {
     getUserSingerList,
-    isSubscribed
+    subscribeStatus
 } from '../interface/client/subscription';
 import { selectPremiumSongBySingerId } from '../interface/repository/premium-song';
 
@@ -69,8 +69,10 @@ const getSingerPremiumSong = async (
             return userNotFound;
         }
 
+        const ACCEPTED = 'ACCEPTED';
         binotify_user_id = Number(binotify_user_id);
-        if (!isSubscribed(binotify_user_id, singer_id)) {
+        const subscriptionStatus: any = await subscribeStatus(binotify_user_id, singer_id);
+        if (subscriptionStatus !== ACCEPTED) {
             const userNotSubscribed: StandardError = {
                 error_code: ErrorCode.NOT_SUBSCRIBED,
                 message: ErrorMessage.NOT_SUBSCRIBED

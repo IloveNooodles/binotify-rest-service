@@ -28,7 +28,7 @@ const getPendingSubscriptionList = async () => {
     return response;
 };
 
-const isSubscribed = async (binotify_user_id: number, singer_id: number) => {
+const subscribeStatus = async (binotify_user_id: number, singer_id: number) => {
     const funcName = 'checkStatus';
     const payload = {
         creator_id: singer_id,
@@ -39,6 +39,7 @@ const isSubscribed = async (binotify_user_id: number, singer_id: number) => {
         funcName,
         payload
     );
+    console.log("response", response);
 
     return response;
 };
@@ -89,7 +90,7 @@ const __convertXmlToJson = (xml: string, funcName: string) => {
 export {
     getUserSingerList,
     getPendingSubscriptionList,
-    isSubscribed,
+    subscribeStatus,
     acceptSubscription,
     rejectSubscription
 };
