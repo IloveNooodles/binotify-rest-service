@@ -1,16 +1,4 @@
-import Pg from '../infrastructure/database/postgresql';
-import { IPremiumSong } from '../domain/premium-song';
-import { IUser } from '../domain/user';
-import {
-    selectSingerById,
-    selectAllSinger
-} from '../interface/repository/user';
 import { StandardError, ErrorCode, ErrorMessage } from '../common/error';
-import {
-    getUserSingerList,
-    isSubscribed
-} from '../interface/client/subscription';
-import { selectPremiumSongBySingerId } from '../interface/repository/premium-song';
 import {
     getPendingSubscriptionList,
     acceptSubscription,
