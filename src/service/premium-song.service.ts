@@ -21,7 +21,14 @@ const createNewPremiumSong = async (
     try {
         await Pg.connect();
 
-        if (title === null || title === '' || title === undefined || audio_path === null || audio_path === '' || audio_path === undefined) {
+        if (
+            title === null ||
+            title === '' ||
+            title === undefined ||
+            audio_path === null ||
+            audio_path === '' ||
+            audio_path === undefined
+        ) {
             const invalidInput: StandardError = {
                 error_code: ErrorCode.INVALID_INPUT,
                 message: ErrorMessage.INVALID_INPUT

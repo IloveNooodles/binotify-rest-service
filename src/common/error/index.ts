@@ -24,7 +24,7 @@ export enum ErrorCode {
     INVALID_INPUT = 'INVALID_INPUT',
     PHP_SERVICE_ERROR = 'PHP_SERVICE_ERROR',
     SUBSCRIPTION_SERVICE_ERROR = 'SUBSCRIPTION_SERVICE_ERROR',
-    INVALID_USERNAME = 'INVALID_USERNAME',
+    INVALID_USERNAME = 'INVALID_USERNAME'
 }
 
 export enum ErrorMessage {
@@ -48,5 +48,5 @@ export enum ErrorMessage {
     INVALID_INPUT = 'Invalid input',
     PHP_SERVICE_ERROR = 'PHP service error',
     SUBSCRIPTION_SERVICE_ERROR = 'Subscription service error',
-    INVALID_USERNAME = 'Invalid username',
+    INVALID_USERNAME = 'Invalid username'
 }

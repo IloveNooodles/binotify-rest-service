@@ -8,7 +8,11 @@ import {
     rejectSubscription
 } from '../interface/client/subscription';
 
-const getPendingSubscription = async (user_id: any, page: number = 1, limit: number = 10) => {
+const getPendingSubscription = async (
+    user_id: any,
+    page: number = 1,
+    limit: number = 10
+) => {
     try {
         await Pg.connect();
 
@@ -38,14 +42,17 @@ const getPendingSubscription = async (user_id: any, page: number = 1, limit: num
         const totalLength = pendingSubscriptionList.length;
 
         const offset = (page - 1) * limit;
-        const pendingSubscriptionListPaginated = pendingSubscriptionList.slice(offset, offset + limit);
+        const pendingSubscriptionListPaginated = pendingSubscriptionList.slice(
+            offset,
+            offset + limit
+        );
 
         return {
             page: page,
             maximum_page: Math.ceil(pendingSubscriptionList.length / limit),
             count_all_pending_subscription: totalLength,
-            pending_subscription_list: pendingSubscriptionListPaginated,
-        }
+            pending_subscription_list: pendingSubscriptionListPaginated
+        };
     } catch (error) {
         throw error;
     }
@@ -98,9 +105,15 @@ const updateSubscriptionStatus = async (
 
         let updateStatusResponse;
         if (status === ACCEPTED) {
-            updateStatusResponse = await acceptSubscription(subscription_id, singer_id);
+            updateStatusResponse = await acceptSubscription(
+                subscription_id,
+                singer_id
+            );
         } else {
-            updateStatusResponse = await rejectSubscription(subscription_id, singer_id);
+            updateStatusResponse = await rejectSubscription(
+                subscription_id,
+                singer_id
+            );
         }
 
         if (
@@ -116,7 +129,7 @@ const updateSubscriptionStatus = async (
 
         return {
             update_status: updateStatusResponse
-        }
+        };
     } catch (error) {
         throw error;
     }
@@ -135,6 +148,6 @@ const __validateAdminRole = async (user_id: number) => {
     }
 
     return true;
-}
+};
 
 export { getPendingSubscription, updateSubscriptionStatus };

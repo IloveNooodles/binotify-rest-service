@@ -26,7 +26,7 @@ const getAllSinger = async () => {
                 id: singer.id,
                 name: singer.name,
                 username: singer.username,
-                email: singer.email,
+                email: singer.email
             };
             return filteredSinger;
         });
@@ -71,7 +71,10 @@ const getSingerPremiumSong = async (
 
         const ACCEPTED = 'ACCEPTED';
         binotify_user_id = Number(binotify_user_id);
-        const subscriptionStatus: any = await subscribeStatus(binotify_user_id, singer_id);
+        const subscriptionStatus: any = await subscribeStatus(
+            binotify_user_id,
+            singer_id
+        );
         if (subscriptionStatus !== ACCEPTED) {
             const userNotSubscribed: StandardError = {
                 error_code: ErrorCode.NOT_SUBSCRIBED,

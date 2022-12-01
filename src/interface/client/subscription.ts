@@ -8,10 +8,7 @@ const getUserSingerList = async (binotify_user_id: number) => {
         subscription_id: binotify_user_id
     };
 
-    const response = await SubscriptionService.post(
-        funcName,
-        payload
-    );
+    const response = await SubscriptionService.post(funcName, payload);
 
     return response;
 };
@@ -20,10 +17,7 @@ const getPendingSubscriptionList = async () => {
     const funcName = 'fetchPendingSubscription';
     const payload = null;
 
-    const response = await SubscriptionService.post(
-        funcName,
-        payload
-    );
+    const response = await SubscriptionService.post(funcName, payload);
 
     return response;
 };
@@ -35,40 +29,37 @@ const subscribeStatus = async (binotify_user_id: number, singer_id: number) => {
         subscriber_id: binotify_user_id
     };
 
-    const response = await SubscriptionService.post(
-        funcName,
-        payload
-    );
+    const response = await SubscriptionService.post(funcName, payload);
 
     return response;
 };
 
-const acceptSubscription = async (binotify_user_id: number, singer_id: number) => {
+const acceptSubscription = async (
+    binotify_user_id: number,
+    singer_id: number
+) => {
     const funcName = 'acceptSubscription';
     const payload = {
         creator_id: singer_id,
         subscriber_id: binotify_user_id
     };
 
-    const response = await SubscriptionService.post(
-        funcName,
-        payload
-    );
+    const response = await SubscriptionService.post(funcName, payload);
 
     return response;
 };
 
-const rejectSubscription = async (binotify_user_id: number, singer_id: number) => {
+const rejectSubscription = async (
+    binotify_user_id: number,
+    singer_id: number
+) => {
     const funcName = 'rejectSubscription';
     const payload = {
         creator_id: singer_id,
         subscriber_id: binotify_user_id
     };
 
-    const response = await SubscriptionService.post(
-        funcName,
-        payload
-    );
+    const response = await SubscriptionService.post(funcName, payload);
 
     return response;
 };

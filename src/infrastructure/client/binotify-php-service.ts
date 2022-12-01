@@ -1,5 +1,5 @@
-import { StandardError, ErrorCode, ErrorMessage } from "../../common/error";
-import axios from "axios";
+import { StandardError, ErrorCode, ErrorMessage } from '../../common/error';
+import axios from 'axios';
 
 const BINOTIFY_PHP_SERVICE_BASE_URL = process.env
     .BINOTIFY_PHP_SERVICE_BASE_URL as string;
@@ -7,11 +7,15 @@ const BINOTIFY_PHP_SERVICE_BASE_URL = process.env
 export default class BinotifyPhpService {
     public static async post(path: string, data: any): Promise<any> {
         try {
-            const response = await axios.post(BINOTIFY_PHP_SERVICE_BASE_URL + path, data, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
+            const response = await axios.post(
+                BINOTIFY_PHP_SERVICE_BASE_URL + path,
+                data,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
                 }
-            });
+            );
 
             return response.data;
         } catch (error) {
