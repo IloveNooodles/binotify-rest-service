@@ -12,8 +12,18 @@ import {
 const fetchAllPendingSubscription = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
+            let page: number = Number(req.query.page) || 1;
+            let limit: number = Number(req.query.limit) || 10;
+
+            if (page < 1 || limit < 1) {
+                page = 1;
+                limit = 10;
+            }
+
             const result = await getPendingSubscription(
-                req.body.user_id
+                req.body.user_id,
+                page,
+                limit
             );
 
             const statusCode = instanceOfStandardError(result)

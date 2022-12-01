@@ -39,7 +39,6 @@ const subscribeStatus = async (binotify_user_id: number, singer_id: number) => {
         funcName,
         payload
     );
-    console.log("response", response);
 
     return response;
 };

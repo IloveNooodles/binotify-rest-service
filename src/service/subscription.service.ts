@@ -8,7 +8,7 @@ import {
     rejectSubscription
 } from '../interface/client/subscription';
 
-const getPendingSubscription = async (user_id: any) => {
+const getPendingSubscription = async (user_id: any, page: number = 1, limit: number = 10) => {
     try {
         await Pg.connect();
 
@@ -25,8 +25,8 @@ const getPendingSubscription = async (user_id: any) => {
 
         if (
             pendingSubscriptionList !== null &&
-            !Array.isArray(pendingSubscriptionList) &&
-            pendingSubscriptionList === 'NOT_AUTHENTICATED'
+            pendingSubscriptionList === 'NOT_AUTHENTICATED' &&
+            !Array.isArray(pendingSubscriptionList)
         ) {
             const invalidStatus: StandardError = {
                 error_code: ErrorCode.NOT_AUTHENTICATED,
@@ -35,7 +35,17 @@ const getPendingSubscription = async (user_id: any) => {
             return invalidStatus;
         }
 
-        return pendingSubscriptionList;
+        const totalLength = pendingSubscriptionList.length;
+
+        const offset = (page - 1) * limit;
+        const pendingSubscriptionListPaginated = pendingSubscriptionList.slice(offset, offset + limit);
+
+        return {
+            page: page,
+            maximum_page: Math.ceil(pendingSubscriptionList.length / limit),
+            count_all_pending_subscription: totalLength,
+            pending_subscription_list: pendingSubscriptionListPaginated,
+        }
     } catch (error) {
         throw error;
     }
