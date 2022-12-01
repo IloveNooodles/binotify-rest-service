@@ -44,7 +44,8 @@
   "scripts": {
     "build": "tsc --project ./",
     "start": "nodemon src/server.ts",
-    "start:prod": "node dist/server.js",
-    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write"
-  }
+    "start:prod": "yarn ts-node ./src/server.ts --transpile-only",
+    "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
+    "postinstall": "yarn prisma generate"
+}
 }

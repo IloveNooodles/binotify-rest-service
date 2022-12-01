@@ -1,5 +1,5 @@
 node_modules
 .env
 pgdata
-
+dist
 yarn-error.log

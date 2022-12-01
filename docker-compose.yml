@@ -1,63 +1,63 @@
-version: "3.8"
+version: '3.8'
 services:
-  web:
-    container_name: binotify-rest-services
-    hostname: web
-    env_file: .env
-    build: .
-    ports:
-      - "8000:3333"
-    networks:
-      - rest-service
-    depends_on:
-      db:
-        condition: service_healthy
-      cache:
-        condition: service_started
-  db:
-    container_name: postgres
-    image: postgres:13.9-alpine3.16
-    hostname: postgres
-    volumes:
-      - ./pgdata:/var/lib/postgresql/data
-      - ./migration/init.sql:/docker-entrypoint-initdb.d/init.sql
-    healthcheck:
-      test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
-      interval: 10s
-      timeout: 3s
-      retries: 5
-    env_file: .env
-    restart: always
-    ports:
-      - "8001:5432"
-    networks:
-      - rest-service
-  cache:
-    image: redis:alpine3.16
-    container_name: redis
-    hostname: redis
-    env_file: .env
-    networks:
-      - rest-service
-    ports:
-      - "6379:6379"
-    depends_on:
-      - db
-    volumes:
-      - ./cache:/data
-    command:
-      [
-        "redis-server",
-        "--save 20 1",
-        "--loglevel warning",
-        "--requirepass ${REDIS_PASSWORD}",
-      ]
+    binotify-rest-service-server:
+        container_name: binotify-rest-service-server
+        hostname: binotify-rest-service-server
+        env_file: .env
+        build: .
+        ports:
+            - '7000:3333'
+        networks:
+            - rest-service
+        depends_on:
+            binotify-rest-service-db:
+                condition: service_healthy
+            binotify-rest-service-cache:
+                condition: service_started
+    binotify-rest-service-db:
+        container_name: binotify-rest-service-db
+        image: postgres:13.9-alpine3.16
+        hostname: binotify-rest-service-db
+        volumes:
+            - ./pgdata:/var/lib/postgresql/data
+            - ./migration/init.sql:/docker-entrypoint-initdb.d/init.sql
+        healthcheck:
+            test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+            interval: 10s
+            timeout: 3s
+            retries: 5
+        env_file: .env
+        restart: always
+        ports:
+            - '7001:5432'
+        networks:
+            - rest-service
+    binotify-rest-service-cache:
+        image: redis:alpine3.16
+        container_name: binotify-rest-service-cache
+        hostname: binotify-rest-service-cache
+        env_file: .env
+        networks:
+            - rest-service
+        ports:
+            - '7002:6379'
+        depends_on:
+            - binotify-rest-service-db
+        volumes:
+            - ./cache:/data
+        command:
+            [
+                'redis-server',
+                '--save 20 1',
+                '--loglevel warning',
+                '--requirepass ${REDIS_PASSWORD}'
+            ]
 
 volumes:
-  pgdata:
-    driver: local
-  cache:
-    driver: local
+    pgdata:
+        driver: local
+    cache:
+        driver: local
 
 networks:
-  rest-service:
+    rest-service:
