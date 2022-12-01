@@ -44,8 +44,8 @@ const isSubscribed = async (binotify_user_id: number, singer_id: number) => {
     const payload = `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
         <Body>
             <checkStatus xmlns="http://controller/">
-                <creator_id xmlns="">0</creator_id
-                <subscriber_id xmlns="">0</subscriber_id>
+                <creator_id xmlns="">${singer_id}</creator_id
+                <subscriber_id xmlns="">${binotify_user_id}</subscriber_id>
             </checkStatus>
         </Body>
     </Envelope>`;
@@ -59,13 +59,13 @@ const isSubscribed = async (binotify_user_id: number, singer_id: number) => {
     return responseJson;
 };
 
-const acceptSubscription = async (subscription_id: number) => {
+const acceptSubscription = async (binotify_user_id: number, singer_id: number) => {
     const funcName = 'acceptSubscription';
     const payload = `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
         <Body>
             <acceptSubscription xmlns="http://controller/">
-                <creator_id xmlns="">[int]</creator_id>
-                <subscriber_id xmlns="">[int]</subscriber_id>
+                <creator_id xmlns="">${singer_id}</creator_id>
+                <subscriber_id xmlns="">${binotify_user_id}</subscriber_id>
             </acceptSubscription>
         </Body>
     </Envelope>`;
@@ -79,13 +79,13 @@ const acceptSubscription = async (subscription_id: number) => {
     return responseJson;
 };
 
-const rejectSubscription = async (subscription_id: number) => {
+const rejectSubscription = async (binotify_user_id: number, singer_id: number) => {
     const funcName = 'subscribe';
     const payload = `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
         <Body>
             <subscribe xmlns="http://controller/">
-                <creator_id xmlns="">[int]</creator_id>
-                <subscriber_id xmlns="">[int]</subscriber_id>
+                <creator_id xmlns="">${singer_id}</creator_id>
+                <subscriber_id xmlns="">${binotify_user_id}</subscriber_id>
             </subscribe>
         </Body>
     </Envelope>`;
