@@ -15,38 +15,18 @@ import { selectPremiumSongBySingerId } from '../interface/repository/premium-son
 const MIN_OFFSET = 0;
 const MAX_LIMIT = 9999;
 
-const getAllSinger = async (binotify_user_id: number | null) => {
+const getAllSinger = async () => {
     try {
         await Pg.connect();
 
-        if (binotify_user_id === null) {
-            const userNotFound: StandardError = {
-                error_code: ErrorCode.USER_NOT_FOUND,
-                message: ErrorMessage.USER_NOT_FOUND
-            };
-            return userNotFound;
-        }
-
         const singerList = await selectAllSinger(Pg);
-        const userSubsctipionList = await getUserSingerList(binotify_user_id);
 
-        const SUBSCRIPTION_NOT_FOUND = 'SUBSCRIPTION_NOT_FOUND';
         const filteredSingerList = singerList.map((singer: IUser) => {
-            let subscriptionStatus = SUBSCRIPTION_NOT_FOUND;
-
-            for (let i = 0; i < userSubsctipionList.length; i++) {
-                if (userSubsctipionList[i].creator_id === singer.id) {
-                    subscriptionStatus = userSubsctipionList[i].status;
-                    break;
-                }
-            }
-
             const filteredSinger = {
                 id: singer.id,
                 name: singer.name,
                 username: singer.username,
                 email: singer.email,
-                subscription_status: subscriptionStatus
             };
             return filteredSinger;
         });

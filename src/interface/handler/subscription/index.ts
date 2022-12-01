@@ -34,8 +34,10 @@ const updateSubscriptionStatusById = () => {
         try {
             const subscription_id = Number(req.params.subscription_id) || null;
             const status: string = req.body.status || null;
+            const singer_id = Number(req.body.singer_id) || null;
 
             const result = await updateSubscriptionStatus(
+                singer_id,
                 subscription_id,
                 status
             );

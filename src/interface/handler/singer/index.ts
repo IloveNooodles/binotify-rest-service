@@ -12,11 +12,11 @@ import {
 const findAllSinger = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
-            // const result = await getAllSinger();
-            // const statusCode = instanceOfStandardError(result)
-            //     ? HttpStatus.StatusCodes.BAD_REQUEST
-            //     : HttpStatus.StatusCodes.OK;
-            // buildResponse(res, statusCode, result);
+            const result = await getAllSinger();
+            const statusCode = instanceOfStandardError(result)
+                ? HttpStatus.StatusCodes.BAD_REQUEST
+                : HttpStatus.StatusCodes.OK;
+            buildResponse(res, statusCode, result);
         } catch (error) {
             buildResponse(
                 res,

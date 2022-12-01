@@ -28,12 +28,21 @@ const getPendingSubscription = async () => {
 };
 
 const updateSubscriptionStatus = async (
+    singer_id: number | null,
     subscription_id: number | null,
     status: string
 ) => {
     try {
         const ACCEPTED = 'ACCEPTED';
         const REJECTED = 'REJECTED';
+
+        if (singer_id === null) {
+            const singerNotFound: StandardError = {
+                error_code: ErrorCode.SINGER_NOT_FOUND,
+                message: ErrorMessage.SINGER_NOT_FOUND
+            };
+            return singerNotFound;
+        }
 
         if (subscription_id === null) {
             const invalidSubscriptionId: StandardError = {
@@ -53,9 +62,9 @@ const updateSubscriptionStatus = async (
 
         let updateStatusResponse;
         if (status === ACCEPTED) {
-            updateStatusResponse = await acceptSubscription(subscription_id);
+            updateStatusResponse = await acceptSubscription(subscription_id, singer_id);
         } else {
-            updateStatusResponse = await rejectSubscription(subscription_id);
+            updateStatusResponse = await rejectSubscription(subscription_id, singer_id);
         }
 
         if (
