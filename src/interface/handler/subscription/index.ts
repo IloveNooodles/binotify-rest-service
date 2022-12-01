@@ -12,7 +12,9 @@ import {
 const fetchAllPendingSubscription = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const result = await getPendingSubscription();
+            const result = await getPendingSubscription(
+                req.body.user_id
+            );
 
             const statusCode = instanceOfStandardError(result)
                 ? HttpStatus.StatusCodes.BAD_REQUEST
@@ -32,11 +34,12 @@ const fetchAllPendingSubscription = () => {
 const updateSubscriptionStatusById = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const subscription_id = Number(req.params.subscription_id) || null;
+            const subscription_id = Number(req.body.subscription_id) || null;
             const status: string = req.body.status || null;
             const singer_id = Number(req.body.singer_id) || null;
 
             const result = await updateSubscriptionStatus(
+                req.body.user_id,
                 singer_id,
                 subscription_id,
                 status

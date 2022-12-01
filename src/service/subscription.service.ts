@@ -1,3 +1,6 @@
+import Pg from '../infrastructure/database/postgresql';
+import { IUser } from '../domain/user';
+import { selectUserById } from '../interface/repository/user';
 import { StandardError, ErrorCode, ErrorMessage } from '../common/error';
 import {
     getPendingSubscriptionList,
@@ -5,8 +8,19 @@ import {
     rejectSubscription
 } from '../interface/client/subscription';
 
-const getPendingSubscription = async () => {
+const getPendingSubscription = async (user_id: any) => {
     try {
+        await Pg.connect();
+
+        const isValidAdmin = await __validateAdminRole(user_id);
+        if (!isValidAdmin) {
+            const userNotFound: StandardError = {
+                error_code: ErrorCode.INVALID_USER_TYPE,
+                message: ErrorMessage.INVALID_USER_TYPE
+            };
+            return userNotFound;
+        }
+
         const pendingSubscriptionList = await getPendingSubscriptionList();
 
         if (
@@ -28,11 +42,23 @@ const getPendingSubscription = async () => {
 };
 
 const updateSubscriptionStatus = async (
+    user_id: any,
     singer_id: number | null,
     subscription_id: number | null,
     status: string
 ) => {
     try {
+        await Pg.connect();
+
+        const isValidAdmin = await __validateAdminRole(user_id);
+        if (!isValidAdmin) {
+            const userNotFound: StandardError = {
+                error_code: ErrorCode.INVALID_USER_TYPE,
+                message: ErrorMessage.INVALID_USER_TYPE
+            };
+            return userNotFound;
+        }
+
         const ACCEPTED = 'ACCEPTED';
         const REJECTED = 'REJECTED';
 
@@ -68,7 +94,7 @@ const updateSubscriptionStatus = async (
         }
 
         if (
-            updateStatusResponse !== 'ACCEPT_SUBSCRIPTION' ||
+            updateStatusResponse !== 'ACCEPT_SUBSCRIPTION' &&
             updateStatusResponse !== 'REJECT_SUBSCRIPTION'
         ) {
             const invalidStatus: StandardError = {
@@ -78,10 +104,27 @@ const updateSubscriptionStatus = async (
             return invalidStatus;
         }
 
-        return updateStatusResponse;
+        return {
+            update_status: updateStatusResponse
+        }
     } catch (error) {
         throw error;
     }
 };
+
+const __validateAdminRole = async (user_id: number) => {
+    const userDetail: IUser | null = await selectUserById(Pg, user_id);
+
+    if (
+        userDetail === null ||
+        userDetail.isAdmin === null ||
+        userDetail.isAdmin === undefined ||
+        userDetail.isAdmin === false
+    ) {
+        return false;
+    }
+
+    return true;
+}
 
 export { getPendingSubscription, updateSubscriptionStatus };

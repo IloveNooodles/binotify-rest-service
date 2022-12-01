@@ -1,102 +1,76 @@
 import xml2json from 'xml2json';
 
 import SubscriptionService from '../../infrastructure/client/subscription-service';
-const SUBSCRIPTION_ENDPOINT = 'api/subscription';
 
 const getUserSingerList = async (binotify_user_id: number) => {
     const funcName = 'getAcceptedSubscriptionBySubcriptionId';
-    const payload = `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
-        <Body>
-            <getAcceptedSubscriptionBySubcriptionId xmlns="http://controller/">
-                <subscriber_id xmlns="">${binotify_user_id}</subscriber_id>
-            </getAcceptedSubscriptionBySubcriptionId>
-        </Body>
-    </Envelope>`;
+    const payload = {
+        subscription_id: binotify_user_id
+    };
 
     const response = await SubscriptionService.post(
-        SUBSCRIPTION_ENDPOINT,
+        funcName,
         payload
     );
-    const responseJson = __convertXmlToJson(response, funcName);
 
-    return responseJson;
+    return response;
 };
 
 const getPendingSubscriptionList = async () => {
     const funcName = 'fetchPendingSubscription';
-    const payload = `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
-        <Body>
-            <fetchPendingSubscription xmlns="http://controller/"/>
-        </Body>
-    </Envelope>`;
+    const payload = null;
 
     const response = await SubscriptionService.post(
-        SUBSCRIPTION_ENDPOINT,
+        funcName,
         payload
     );
-    const responseJson = __convertXmlToJson(response, funcName);
 
-    return responseJson;
+    return response;
 };
 
 const isSubscribed = async (binotify_user_id: number, singer_id: number) => {
     const funcName = 'checkStatus';
-    const payload = `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
-        <Body>
-            <checkStatus xmlns="http://controller/">
-                <creator_id xmlns="">${singer_id}</creator_id
-                <subscriber_id xmlns="">${binotify_user_id}</subscriber_id>
-            </checkStatus>
-        </Body>
-    </Envelope>`;
+    const payload = {
+        creator_id: singer_id,
+        subscriber_id: binotify_user_id
+    };
 
     const response = await SubscriptionService.post(
-        SUBSCRIPTION_ENDPOINT,
+        funcName,
         payload
     );
-    const responseJson = __convertXmlToJson(response, funcName);
 
-    return responseJson;
+    return response;
 };
 
 const acceptSubscription = async (binotify_user_id: number, singer_id: number) => {
     const funcName = 'acceptSubscription';
-    const payload = `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
-        <Body>
-            <acceptSubscription xmlns="http://controller/">
-                <creator_id xmlns="">${singer_id}</creator_id>
-                <subscriber_id xmlns="">${binotify_user_id}</subscriber_id>
-            </acceptSubscription>
-        </Body>
-    </Envelope>`;
+    const payload = {
+        creator_id: singer_id,
+        subscriber_id: binotify_user_id
+    };
 
     const response = await SubscriptionService.post(
-        SUBSCRIPTION_ENDPOINT,
+        funcName,
         payload
     );
-    const responseJson = __convertXmlToJson(response, funcName);
 
-    return responseJson;
+    return response;
 };
 
 const rejectSubscription = async (binotify_user_id: number, singer_id: number) => {
-    const funcName = 'subscribe';
-    const payload = `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
-        <Body>
-            <subscribe xmlns="http://controller/">
-                <creator_id xmlns="">${singer_id}</creator_id>
-                <subscriber_id xmlns="">${binotify_user_id}</subscriber_id>
-            </subscribe>
-        </Body>
-    </Envelope>`;
+    const funcName = 'rejectSubscription';
+    const payload = {
+        creator_id: singer_id,
+        subscriber_id: binotify_user_id
+    };
 
     const response = await SubscriptionService.post(
-        SUBSCRIPTION_ENDPOINT,
+        funcName,
         payload
     );
-    const responseJson = __convertXmlToJson(response, funcName);
 
-    return responseJson;
+    return response;
 };
 
 const __convertXmlToJson = (xml: string, funcName: string) => {
