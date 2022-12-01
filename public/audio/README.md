@@ -1,0 +1,1 @@
+this folder is the static folder for premium song
