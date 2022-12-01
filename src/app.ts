@@ -21,6 +21,7 @@ class App {
             }
         };
         this.server.use(cors(corsOptions));
+        this.server.use(express.static('public'));
 
         this.middlewares();
         this.routes();

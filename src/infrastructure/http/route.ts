@@ -1,4 +1,5 @@
 import { Request, Response, Router } from 'express';
+import multer from 'multer';
 
 import validateRequest from '../../middleware/request-validation';
 import { getJwtSecretKey } from '../../util/security';
@@ -32,6 +33,21 @@ import {
 
 const router = Router();
 
+const STATIC_AUDIO_FILE_PATH = 'public/audio';
+const PUBLIC_AUDIO_PATH = process.env.APP_BASE_URL + '/audio';
+
+const storageFile = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, STATIC_AUDIO_FILE_PATH);
+    },
+    filename: (req, file, cb) => {
+        req.body.audio_path = PUBLIC_AUDIO_PATH + '/' + file.originalname;
+        cb(null, file.originalname);
+    }
+});
+
+const upload = multer({ storage: storageFile });
+
 router.get('/healthcheck', (req: Request, res: Response) => {
     res.send({
         message: 'Hello GareArya Arkananta!'
@@ -58,6 +74,7 @@ router.get('/user', validateApiKey(), getUser());
 
 router.post(
     '/premium-song',
+    upload.single('audio_file'),
     validateApiKey(),
     newPremiumSong()
 );
@@ -68,7 +85,7 @@ router.get('/premium-song/:song_id', validateApiKey(), findPremiumSong());
 
 router.put(
     '/premium-song/:song_id',
-    validateRequest({ body: JUpdatePremiumSong }),
+    upload.single('audio_file'),
     validateApiKey(),
     editPremiumSong()
 );
