@@ -18,7 +18,37 @@ const newPremiumSong = () => {
             const result = await createNewPremiumSong(
                 user_id,
                 req.body.title,
-                req.body.audio_file
+                req.body.audio_path
+            );
+
+            const statusCode = instanceOfStandardError(result)
+                ? HttpStatus.StatusCodes.BAD_REQUEST
+                : HttpStatus.StatusCodes.OK;
+
+            buildResponse(res, statusCode, result);
+        } catch (error) {
+            buildResponse(
+                res,
+                HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR,
+                error
+            );
+        }
+    };
+};
+
+const editPremiumSong = () => {
+    return async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const user_id = req.body.user_id;
+            const song_id = Number(req.params.song_id) || null;
+            const title = req.body.title ? req.body.title : null;
+            const audio_path = req.body.audio_path ? req.body.audio_path : null;
+
+            const result = await updateSingerPremiumSong(
+                user_id,
+                song_id,
+                title,
+                audio_path
             );
 
             const statusCode = instanceOfStandardError(result)
@@ -67,36 +97,6 @@ const findPremiumSong = () => {
             const song_id = Number(req.params.song_id) || null;
 
             const result = await getSingerPremiumSong(user_id, song_id);
-
-            const statusCode = instanceOfStandardError(result)
-                ? HttpStatus.StatusCodes.BAD_REQUEST
-                : HttpStatus.StatusCodes.OK;
-
-            buildResponse(res, statusCode, result);
-        } catch (error) {
-            buildResponse(
-                res,
-                HttpStatus.StatusCodes.INTERNAL_SERVER_ERROR,
-                error
-            );
-        }
-    };
-};
-
-const editPremiumSong = () => {
-    return async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const user_id = req.body.user_id;
-            const song_id = Number(req.params.song_id) || null;
-            const title = req.body.title ? req.body.title : null;
-            const audio_file = req.body.audio_file ? req.body.audio_file : null;
-
-            const result = await updateSingerPremiumSong(
-                user_id,
-                song_id,
-                title,
-                audio_file
-            );
 
             const statusCode = instanceOfStandardError(result)
                 ? HttpStatus.StatusCodes.BAD_REQUEST

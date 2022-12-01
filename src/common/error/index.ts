@@ -22,6 +22,7 @@ export enum ErrorCode {
     NOT_AUTHENTICATED = 'NOT_AUTHENTICATED',
     INVALID_SUBSCRIPTION_ID = 'INVALID_SUBSCRIPTION_ID',
     INVALID_INPUT = 'INVALID_INPUT',
+    PHP_SERVICE_ERROR = 'PHP_SERVICE_ERROR',
 }
 
 export enum ErrorMessage {
@@ -43,4 +44,5 @@ export enum ErrorMessage {
     NOT_AUTHENTICATED = 'service not authenticated with soap server',
     INVALID_SUBSCRIPTION_ID = 'Invalid subscription id',
     INVALID_INPUT = 'Invalid input',
+    PHP_SERVICE_ERROR = 'PHP service error',
 }

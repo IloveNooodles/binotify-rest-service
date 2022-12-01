@@ -3,7 +3,6 @@ import { IPremiumSong } from '../domain/premium-song';
 import { IUser } from '../domain/user';
 import { selectUserById } from '../interface/repository/user';
 import { StandardError, ErrorCode, ErrorMessage } from '../common/error';
-import { postAudio } from '../interface/client/audio';
 import { IInsertPremiumSong } from '../interface/repository/premium-song/type';
 import {
     insertPremiumSong,
@@ -17,12 +16,12 @@ import {
 const createNewPremiumSong = async (
     singer_id: number,
     title: string,
-    audio_file: any
+    audio_path: any
 ) => {
     try {
         await Pg.connect();
 
-        if (title === null || title === '' || title === undefined || audio_file === null || audio_file === '' || audio_file === undefined) {
+        if (title === null || title === '' || title === undefined || audio_path === null || audio_path === '' || audio_path === undefined) {
             const invalidInput: StandardError = {
                 error_code: ErrorCode.INVALID_INPUT,
                 message: ErrorMessage.INVALID_INPUT
@@ -39,15 +38,9 @@ const createNewPremiumSong = async (
             return userNotFound;
         }
 
-        // const uploadedFile: string = await postAudio(audio_file);
-        const uploadedFile: string = 'ya';
-
-        console.log(title);
-        console.log(audio_file);
-
         const premiumSong: IInsertPremiumSong = {
             title: title,
-            audio_path: uploadedFile,
+            audio_path: audio_path,
             user_id: singer_id
         };
 
@@ -147,7 +140,7 @@ const updateSingerPremiumSong = async (
     singer_id: number,
     song_id: number | null,
     title: string | null,
-    audio_file: any
+    audio_path: any
 ): Promise<any> => {
     try {
         await Pg.connect();
@@ -191,11 +184,9 @@ const updateSingerPremiumSong = async (
             premiumSong.title = title;
         }
 
-        if (audio_file !== null) {
-            // const uploadedFile: string = await postAudio(audio_file);
-            const uploadedFile: string = 'enggak';
-
-            premiumSong.audio_path = uploadedFile;
+        const PUBLIC_AUDIO_PATH = process.env.APP_BASE_URL + '/audio';
+        if (audio_path !== null && audio_path.startsWith(PUBLIC_AUDIO_PATH)) {
+            premiumSong.audio_path = audio_path;
         }
 
         await updatePremiumSong(Pg, premiumSong);
