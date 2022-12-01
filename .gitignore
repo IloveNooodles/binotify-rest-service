@@ -3,3 +3,5 @@ node_modules
 pgdata
 dist
 yarn-error.log
+public
+.DS_Store
