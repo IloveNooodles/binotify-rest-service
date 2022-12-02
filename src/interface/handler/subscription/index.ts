@@ -44,9 +44,9 @@ const fetchAllPendingSubscription = () => {
 const updateSubscriptionStatusById = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const subscription_id = Number(req.body.subscription_id) || null;
+            const subscription_id = Number(req.body.subscription_id);
             const status: string = req.body.status || null;
-            const singer_id = Number(req.body.singer_id) || null;
+            const singer_id = Number(req.body.singer_id);
 
             const result = await updateSubscriptionStatus(
                 req.body.user_id,

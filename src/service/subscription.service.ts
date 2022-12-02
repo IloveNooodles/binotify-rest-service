@@ -79,7 +79,7 @@ const updateSubscriptionStatus = async (
         const ACCEPTED = 'ACCEPTED';
         const REJECTED = 'REJECTED';
 
-        if (singer_id === null) {
+        if (singer_id === null || singer_id === undefined) {
             const singerNotFound: StandardError = {
                 error_code: ErrorCode.SINGER_NOT_FOUND,
                 message: ErrorMessage.SINGER_NOT_FOUND
@@ -87,7 +87,7 @@ const updateSubscriptionStatus = async (
             return singerNotFound;
         }
 
-        if (subscription_id === null) {
+        if (subscription_id === null || subscription_id === undefined) {
             const invalidSubscriptionId: StandardError = {
                 error_code: ErrorCode.INVALID_SUBSCRIPTION_ID,
                 message: ErrorMessage.INVALID_SUBSCRIPTION_ID
