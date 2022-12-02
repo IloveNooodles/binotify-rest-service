@@ -1,35 +1,25 @@
 import { Request, Response, Router } from 'express';
 import multer from 'multer';
 
-import validateRequest from '../../middleware/request-validation';
-import { getJwtSecretKey } from '../../util/security';
+import { login, register } from '../../interface/handler/auth';
 import {
-    JLoginRequest,
-    JRegisterRequest
+  JLoginRequest,
+  JRegisterRequest
 } from '../../interface/handler/auth/type';
 import {
-    JNewPremiumSong,
-    JUpdatePremiumSong
-} from '../../interface/handler/premium_song/type';
-import { login, register } from '../../interface/handler/auth';
-import handleRequestAsync from '../../middleware/handle-request-async';
-import validateApiKey from '../../middleware/api-key-validation';
-import { getUser } from '../../interface/handler/user';
-import {
-    newPremiumSong,
-    findSingerAllPremiumSong,
-    findPremiumSong,
-    editPremiumSong,
-    deletePremiumSong
+  deletePremiumSong, editPremiumSong, findPremiumSong, findSingerAllPremiumSong, newPremiumSong
 } from '../../interface/handler/premium_song';
 import {
-    findAllSinger,
-    findSingerAllPremiumSongWithUserId
+  findAllSinger,
+  findSingerAllPremiumSongWithUserId
 } from '../../interface/handler/singer';
 import {
-    fetchAllPendingSubscription,
-    updateSubscriptionStatusById
+  fetchAllPendingSubscription,
+  updateSubscriptionStatusById
 } from '../../interface/handler/subscription';
+import { getUser } from '../../interface/handler/user';
+import validateApiKey from '../../middleware/api-key-validation';
+import validateRequest from '../../middleware/request-validation';
 
 const router = Router();
 
@@ -98,7 +88,7 @@ router.delete('/premium-song/:song_id', validateApiKey(), deletePremiumSong());
 
 router.get('/singer', findAllSinger());
 
-router.get('/singer/:singer_id', findSingerAllPremiumSongWithUserId());
+router.post('/singer/:singer_id', findSingerAllPremiumSongWithUserId());
 
 router.get('/subscription', validateApiKey(), fetchAllPendingSubscription());
 
