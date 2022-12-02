@@ -12,7 +12,7 @@ Made with love by
 
 ## API Endpoint & Functionality
 Please refer here https://www.getpostman.com/collections/010d1e585f5350eb0983 to get full version of the endpoints.
-|              Method              |   NIM    |   Description    |
+|              Method              |   Path    |   Description    |
 | :----------------------------: | :------: | :------: |
 | POST              | /register | Register user |
 |       POST        | /login | Login user |
