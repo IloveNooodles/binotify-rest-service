@@ -35,13 +35,12 @@ export default class SubscriptionService {
             });
 
             if (response === null || response === undefined) {
-                throw new Error(
-                    'SubscriptionService.post: response is null or undefined'
-                );
+                return null;
             }
 
             return response.return;
         } catch (error) {
+            console.log(error);
             const subscriptionServiceError: StandardError = {
                 error_code: ErrorCode.SUBSCRIPTION_SERVICE_ERROR,
                 message: ErrorMessage.SUBSCRIPTION_SERVICE_ERROR

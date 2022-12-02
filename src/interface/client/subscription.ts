@@ -10,6 +10,10 @@ const getUserSingerList = async (binotify_user_id: number) => {
 
     const response = await SubscriptionService.post(funcName, payload);
 
+    if (response === null) {
+        return [];
+    }
+
     return response;
 };
 
@@ -18,6 +22,10 @@ const getPendingSubscriptionList = async () => {
     const payload = null;
 
     const response = await SubscriptionService.post(funcName, payload);
+
+    if (response === null) {
+        return [];
+    }
 
     return response;
 };
